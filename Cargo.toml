@@ -1,0 +1,18 @@
+[package]
+name = "geopattern"
+version = "0.1.0"
+authors = ["Suyash <suyash93@protonmail.com>"]
+license = "MIT OR Apache-2.0"
+description = "Beautiful generative geometric background images from a string, a Rust implementation of geo_pattern from @jasonlong"
+repository = "https://github.com/suyash/geopattern"
+readme="README.md"
+keywords = ["geometric", "patterns", "geopattern"]
+exclude = [
+    "/examples/samples/**",
+    ".editorconfig",
+    ".travis.yml"
+]
+
+[dependencies]
+svg = "0.5.10"
+sha1 = "0.6.0"

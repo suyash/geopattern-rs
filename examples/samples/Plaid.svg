@@ -1,0 +1,39 @@
+<svg height="490" width="490" xmlns="http://www.w3.org/2000/svg">
+<rect fill="rgb(95, 42, 76)" height="100%" width="100%" x="0" y="0"/>
+<rect fill="#222" height="8" opacity="0.046" width="100%" x="0" y="5"/>
+<rect fill="#222" height="16" opacity="0.11533333333333333" width="100%" x="0" y="26"/>
+<rect fill="#ddd" height="15" opacity="0.10666666666666666" width="100%" x="0" y="62"/>
+<rect fill="#222" height="14" opacity="0.098" width="100%" x="0" y="85"/>
+<rect fill="#222" height="14" opacity="0.098" width="100%" x="0" y="112"/>
+<rect fill="#ddd" height="9" opacity="0.05466666666666667" width="100%" x="0" y="138"/>
+<rect fill="#222" height="20" opacity="0.15" width="100%" x="0" y="162"/>
+<rect fill="#ddd" height="5" opacity="0.01999999999999999" width="100%" x="0" y="198"/>
+<rect fill="#ddd" height="5" opacity="0.01999999999999999" width="100%" x="0" y="219"/>
+<rect fill="#ddd" height="5" opacity="0.01999999999999999" width="100%" x="0" y="238"/>
+<rect fill="#222" height="16" opacity="0.11533333333333333" width="100%" x="0" y="258"/>
+<rect fill="#ddd" height="17" opacity="0.124" width="100%" x="0" y="288"/>
+<rect fill="#222" height="16" opacity="0.11533333333333333" width="100%" x="0" y="324"/>
+<rect fill="#ddd" height="15" opacity="0.10666666666666666" width="100%" x="0" y="359"/>
+<rect fill="#ddd" height="17" opacity="0.124" width="100%" x="0" y="394"/>
+<rect fill="#ddd" height="9" opacity="0.05466666666666667" width="100%" x="0" y="427"/>
+<rect fill="#222" height="20" opacity="0.15" width="100%" x="0" y="443"/>
+<rect fill="#222" height="10" opacity="0.06333333333333332" width="100%" x="0" y="480"/>
+<rect fill="#222" height="100%" opacity="0.046" width="8" x="5" y="0"/>
+<rect fill="#222" height="100%" opacity="0.11533333333333333" width="16" x="26" y="0"/>
+<rect fill="#ddd" height="100%" opacity="0.10666666666666666" width="15" x="62" y="0"/>
+<rect fill="#222" height="100%" opacity="0.098" width="14" x="85" y="0"/>
+<rect fill="#222" height="100%" opacity="0.098" width="14" x="112" y="0"/>
+<rect fill="#ddd" height="100%" opacity="0.05466666666666667" width="9" x="138" y="0"/>
+<rect fill="#222" height="100%" opacity="0.15" width="20" x="162" y="0"/>
+<rect fill="#ddd" height="100%" opacity="0.01999999999999999" width="5" x="198" y="0"/>
+<rect fill="#ddd" height="100%" opacity="0.01999999999999999" width="5" x="219" y="0"/>
+<rect fill="#ddd" height="100%" opacity="0.01999999999999999" width="5" x="238" y="0"/>
+<rect fill="#222" height="100%" opacity="0.11533333333333333" width="16" x="258" y="0"/>
+<rect fill="#ddd" height="100%" opacity="0.124" width="17" x="288" y="0"/>
+<rect fill="#222" height="100%" opacity="0.11533333333333333" width="16" x="324" y="0"/>
+<rect fill="#ddd" height="100%" opacity="0.10666666666666666" width="15" x="359" y="0"/>
+<rect fill="#ddd" height="100%" opacity="0.124" width="17" x="394" y="0"/>
+<rect fill="#ddd" height="100%" opacity="0.05466666666666667" width="9" x="427" y="0"/>
+<rect fill="#222" height="100%" opacity="0.15" width="20" x="443" y="0"/>
+<rect fill="#222" height="100%" opacity="0.06333333333333332" width="10" x="480" y="0"/>
+</svg>
