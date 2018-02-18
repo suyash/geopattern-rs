@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GeoPattern WASM Demo</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" />
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        #container {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script>
+        (async function (window) {
+            window.addEventListener("DOMContentLoaded", onload);
+
+            let container = null;
+
+            async function onload() {
+                container = document.querySelector("#container");
+
+                const res = await fetch("wasm/gp.wasm");
+                const data = await res.arrayBuffer();
+                const result = await WebAssembly.instantiate(data, {
+                    // nothing special here, just inspected instantiation errors
+                    // to figure out what needed to be defined.
+                    env: {
+                        cos(x) {
+                            return Math.cos(x);
+                        },
+                        fmod(x, y) {
+                            return x % y;
+                        },
+                        Math_atan2(x, y) {
+                            return Math.atan2(x, y);
+                        },
+                        Math_cbrt(x) {
+                            return Math.cbrt(x);
+                        },
+                        pow(x, y) {
+                            return Math.pow(x, y);
+                        },
+                        round(x) {
+                            return Math.round(x);
+                        },
+                        sin(x) {
+                            return Math.sin(x);
+                        },
+                    },
+                });
+
+                const instance = result.instance;
+                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Memory/grow
+                instance.exports.memory.grow(500);
+                console.log(instance);
+
+                const payload = "something wicked this way comes";
+
+                const inptr = createString(payload, instance);
+                const outptr = instance.exports.geopattern(inptr);
+                const image = loadString(outptr, instance);
+
+                console.log(image);
+
+                container.style.background = `url("data:image/svg+xml;base64,${image}")`;
+            }
+
+            function createString(s, instance) {
+                const encoder = new window.TextEncoder("UTF-8");
+                const data = encoder.encode(s);
+
+                const len = data.length;
+                const ptr = instance.exports.alloc(len + 1);
+
+                const buffer = new Uint8Array(instance.exports.memory.buffer);
+                for (let i = 0 ; i < len ; i++) {
+                    buffer[ptr + i] = data[i];
+                }
+
+                buffer[ptr + len] = 0;
+                return ptr;
+            }
+
+            function loadString(ptr, instance) {
+                const buffer = new Uint8Array(collect(ptr, instance));
+                const decoder = new window.TextDecoder("UTF-8");
+                const str = decoder.decode(buffer);
+                instance.exports.dealloc(ptr);
+                return str;
+            }
+
+            function* collect(ptr, instance) {
+                const buffer = new Uint8Array(instance.exports.memory.buffer);
+                while (buffer[ptr] != 0) {
+                    if (buffer[ptr] === undefined) {
+                        throw new Error("tried to read undefined memory");
+                    }
+
+                    yield buffer[ptr];
+                    ptr++;
+                }
+            }
+        })(window);
+    </script>
+</body>
+</html>
