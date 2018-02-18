@@ -126,15 +126,7 @@ impl<'a> GeoPattern<'a> {
     ///
     /// TODO: figure out if this is actually minified
     pub fn to_minified_svg(&self) -> Result<String, GeoPatternError> {
-        Ok(
-            format!("{}", self.to_svg()?)
-                .chars()
-                .map(|x| match x {
-                    '\n' => '\0',
-                    _ => x,
-                })
-                .collect()
-        )
+        Ok(format!("{}", self.to_svg()?).replace("\n", ""))
     }
 
     /// creates a data URI (data:image/svg+xml;utf8,...) from the minified svg.
