@@ -1,5 +1,6 @@
-extern crate svg;
+extern crate base64;
 extern crate sha1;
+extern crate svg;
 
 pub mod color;
 pub mod geo_pattern;
