@@ -6,6 +6,10 @@
 
 Beautiful generative geometric background images from a string
 
+## WASM
+
+There is [an example](https://github.com/suyash/geopattern/blob/master/examples/wasm.rs) that has been used to create a wasm demo at [https://suy.io/geopattern/](https://suy.io/geopattern/).
+
 <!--
 
 ## Patterns
