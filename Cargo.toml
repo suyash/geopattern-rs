@@ -14,5 +14,6 @@ exclude = [
 ]
 
 [dependencies]
+base64 = "0.9.0"
 svg = "0.5.10"
 sha1 = "0.6.0"

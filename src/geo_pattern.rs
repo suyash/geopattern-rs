@@ -3,6 +3,8 @@ use std::error;
 use std::fmt;
 use std::num;
 
+use base64::encode;
+
 use svg::Document;
 use svg::node::element::Rectangle;
 use sha1::Sha1;
@@ -124,20 +126,22 @@ impl<'a> GeoPattern<'a> {
     ///
     /// TODO: figure out if this is actually minified
     pub fn to_minified_svg(&self) -> Result<String, GeoPatternError> {
-        Ok(
-            format!("{}", self.to_svg()?)
-                .chars()
-                .map(|x| match x {
-                    '\n' => '\0',
-                    _ => x,
-                })
-                .collect()
-        )
+        Ok(format!("{}", self.to_svg()?).replace("\n", ""))
     }
 
-    /// creates a data URI (data:image/svg+xml...) from the minified svg.
+    /// creates a data URI (data:image/svg+xml;utf8,...) from the minified svg.
     pub fn to_data_uri(&self) -> Result<String, GeoPatternError> {
         Ok(format!("data:image/svg+xml;utf8,{}", self.to_minified_svg()?))
+    }
+
+    /// creates a base64 encoding of the minified svg.
+    pub fn to_base64(&self) -> Result<String, GeoPatternError> {
+        Ok(encode(&self.to_minified_svg()?))
+    }
+
+    /// creates a data URI (data:image/svg+xml;base64,...) of a base64 encoded svg.
+    pub fn to_base64_data_uri(&self) -> Result<String, GeoPatternError> {
+        Ok(format!("data:image/svg+xml;base64,{}", self.to_base64()?))
     }
 
     /// if color is uninitialized at build time, this will initialize it
