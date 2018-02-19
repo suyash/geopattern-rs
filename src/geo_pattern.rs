@@ -216,8 +216,6 @@ impl<'a> GeoPattern<'a> {
 
 /// GeoPatternError is a wrapper for all errors that can be created
 /// by a GeoPattern Object.
-///
-/// TODO: improve this to be more useful.
 #[derive(Debug)]
 pub enum GeoPatternError {
     UninitializedColor,

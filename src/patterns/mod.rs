@@ -63,17 +63,15 @@ pub trait Pattern {
 
 /// PatternError is a wrapped error for all errors
 /// originating from the 'Pattern' trait and its implementations
-///
-/// TODO: improve this to be more useful.
 #[derive(Debug)]
 pub enum PatternError {
-    IntError(num::ParseIntError),
+    ParseInt(num::ParseIntError),
 }
 
 impl fmt::Display for PatternError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            PatternError::IntError(ref e) => e.fmt(f),
+            PatternError::ParseInt(ref e) => e.fmt(f),
         }
     }
 }
@@ -81,20 +79,20 @@ impl fmt::Display for PatternError {
 impl error::Error for PatternError {
     fn description(&self) -> &str {
         match *self {
-            PatternError::IntError(ref e) => e.description(),
+            PatternError::ParseInt(ref e) => e.description(),
         }
     }
 
     fn cause(&self) -> Option<&error::Error> {
         match *self {
-            PatternError::IntError(ref e) => Some(e),
+            PatternError::ParseInt(ref e) => Some(e),
         }
     }
 }
 
 impl convert::From<num::ParseIntError> for PatternError {
     fn from(e: num::ParseIntError) -> PatternError {
-        PatternError::IntError(e)
+        PatternError::ParseInt(e)
     }
 }
 

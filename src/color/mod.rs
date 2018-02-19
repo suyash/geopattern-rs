@@ -5,19 +5,17 @@ use std::num;
 
 /// ColorError is a wrapper for all errors that
 /// can occur on operations on an Color object
-///
-/// TODO: improve this to be more useful.
 #[derive(Debug)]
 pub enum ColorError {
-    HexParseError,
-    IntError(num::ParseIntError),
+    HexParse,
+    ParseInt(num::ParseIntError),
 }
 
 impl fmt::Display for ColorError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            ColorError::HexParseError => write!(f, "ColorError: Invalid hex"),
-            ColorError::IntError(ref e) => e.fmt(f),
+            ColorError::HexParse => write!(f, "ColorError: Invalid hex"),
+            ColorError::ParseInt(ref e) => e.fmt(f),
         }
     }
 }
@@ -25,22 +23,22 @@ impl fmt::Display for ColorError {
 impl error::Error for ColorError {
     fn description(&self) -> &str {
         match *self {
-            ColorError::HexParseError => "ColorError: Invalid hex",
-            ColorError::IntError(ref e) => e.description(),
+            ColorError::HexParse => "ColorError: Invalid hex",
+            ColorError::ParseInt(ref e) => e.description(),
         }
     }
 
     fn cause(&self) -> Option<&error::Error> {
         match *self {
-            ColorError::HexParseError => None,
-            ColorError::IntError(ref e) => Some(e),
+            ColorError::HexParse => None,
+            ColorError::ParseInt(ref e) => Some(e),
         }
     }
 }
 
 impl convert::From<num::ParseIntError> for ColorError {
     fn from(e: num::ParseIntError) -> ColorError {
-        ColorError::IntError(e)
+        ColorError::ParseInt(e)
     }
 }
 
@@ -91,7 +89,7 @@ impl Color {
     /// convert a hex string ("#abc", "#fedcba") into a `Color` object
     pub fn hex(s: &str) -> Result<Color, ColorError> {
         if s.as_bytes()[0] != b'#' {
-            Err(ColorError::HexParseError)
+            Err(ColorError::HexParse)
         } else if s.len() == 4 {
             let r = u8::from_str_radix(&s[1..2], 16)?;
             let g = u8::from_str_radix(&s[2..3], 16)?;
@@ -103,7 +101,7 @@ impl Color {
             let b = u8::from_str_radix(&s[5..7], 16)?;
             Ok(Color::new((r as f64) * DELTA, (g as f64) * DELTA, (b as f64) * DELTA))
         } else {
-            Err(ColorError::HexParseError)
+            Err(ColorError::HexParse)
         }
     }
 
@@ -147,7 +145,7 @@ impl Color {
         )
     }
 
-    /// Lab representation for the color
+    /// LAB representation for the color
     ///
     /// http://en.wikipedia.org/wiki/Lab_color_space#CIELAB-CIEXYZ_conversions
     /// https://github.com/lucasb-eyer/go-colorful/blob/master/colors.go#L501
