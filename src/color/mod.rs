@@ -231,7 +231,7 @@ impl Color {
 
 #[cfg(test)]
 mod tests {
-    use color::{Color};
+    use super::{Color};
 
     struct Case<'a> {
         hex: &'a str,

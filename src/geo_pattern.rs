@@ -9,8 +9,8 @@ use svg::Document;
 use svg::node::element::Rectangle;
 use sha1::Sha1;
 
-use color::Color;
-use patterns::{
+use crate::color::Color;
+use crate::patterns::{
     Pattern,
     PatternError,
     Patterns,

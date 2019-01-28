@@ -2,6 +2,7 @@
 name = "geopattern"
 version = "0.2.0"
 authors = ["Suyash <suyash93@protonmail.com>"]
+edition = "2018"
 license = "MIT OR Apache-2.0"
 description = "Beautiful generative geometric background images from a string, a Rust implementation of geo_pattern from @jasonlong"
 repository = "https://github.com/suyash/geopattern"
@@ -14,6 +15,6 @@ exclude = [
 ]
 
 [dependencies]
-base64 = "0.9.0"
-svg = "0.5.10"
+base64 = "0.10.1"
+svg = "0.5.12"
 sha1 = "0.6.0"
