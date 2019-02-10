@@ -16,3 +16,9 @@ pub fn generate(s: &str) -> GeoPattern {
 pub fn generate_minified_svg_string(s: &str) -> String {
     GeoPattern::new(s).build().unwrap().to_minified_svg().unwrap()
 }
+
+#[cfg(target_arch="wasm32")]
+#[wasm_bindgen]
+pub fn generate_base64_svg_string(s: &str) -> String {
+    GeoPattern::new(s).build().unwrap().to_base64().unwrap()
+}

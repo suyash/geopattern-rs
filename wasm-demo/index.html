@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>GeoPattern WASM Demo</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.css" />
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, 'Helvetica Neue', Ubuntu, Cantarell, 'Open Sans', sans-serif;
+        }
+
+        #container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #article {
+            padding: 20px 60px;
+            background-color: rgba(255, 255, 255, 0.2);
+            max-width: 60%;
+        }
+
+        #input {
+            width: 100%;
+            font-size: 1.5em;
+            padding: 0.25em;
+        }
+
+        @media screen and (max-width: 480px) {
+            #article {
+                padding: 20px;
+                max-width: 100%;
+            }
+
+            #input {
+                font-size: 1em;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="article">
+            <p>
+                <input type="text" name="input" id="input" placeholder="type here to generate a pattern in real time">
+            </p>
+            <p>
+                This is a demo of the <a href="https://github.com/suyash/geopattern/blob/master/examples/wasm.rs">wasm example</a> in geopattern, a rust crate by me.
+                <a href="https://crates.io/crates/geopattern">geopattern</a> is a rust implementation of the <a href="https://github.com/jasonlong/geo_pattern">geo_pattern ruby library</a> by <a href="https://github.com/jasonlong">Jason Long</a>
+            </p>
+            <p>
+                The example itself is built on rust's <b><i>wasm32-unknown-unknown</i></b> target. Please see the associated <a href="https://github.com/suyash/geopattern/blob/master/Makefile">Makefile</a> for build details.
+            </p>
+            <p>
+                The example is based on the <a href="https://www.hellorust.com/demos/sha1/index.html">SHA1 digest example at hellorust</a>, except instead of a SHA1 digest, this shows the geopattern.
+            </p>
+        </div>
+    </div>
+
+    <script src="./bootstrap.js"></script>
+</body>
+</html>
