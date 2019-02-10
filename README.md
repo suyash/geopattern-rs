@@ -1,12 +1,22 @@
 # geopattern
 
+[![crates.io badge](https://img.shields.io/crates/v/geopattern.svg)](https://crates.io/crates/geopattern) [![docs.rs badge](https://docs.rs/geopattern/badge.svg)](https://docs.rs/geopattern) [![Travis CI Build Status](https://travis-ci.org/suyash/geopattern.svg?branch=master)](https://travis-ci.org/suyash/geopattern)
+
 > Rust implementation of [@jasonlong](https://github.com/jasonlong/)'s [geo_pattern](http://jasonlong.github.io/geo_pattern/)
 
 Beautiful generative geometric background images from a string
 
-<!--
+## WASM
 
-## Patterns
+The main crate exports a `generate_minified_svg_string` function through `wasm-bindgen` that can be used to generate a wasm compatible build with `wasm-pack`.
+
+There is also a simple test that can be run with
+
+```
+wasm-pack test --firefox --headless
+```
+
+<!-- ## Patterns
 
 ### Chevrons
 
@@ -70,9 +80,7 @@ Beautiful generative geometric background images from a string
 
 ### Xes
 
-<img src="./examples/readme/Xes.svg" />
-
--->
+<img src="./examples/readme/Xes.svg" /> -->
 
 ## License
 
