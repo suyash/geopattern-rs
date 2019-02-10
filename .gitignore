@@ -7,3 +7,7 @@ Cargo.lock
 !examples/samples/*.svg
 tmp
 pkg
+
+wasm-demo/node_modules
+wasm-demo/dist
+wasm-demo/pkg
