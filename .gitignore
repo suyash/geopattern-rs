@@ -6,3 +6,4 @@ Cargo.lock
 *.svg
 !examples/samples/*.svg
 tmp
+pkg

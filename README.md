@@ -8,11 +8,15 @@ Beautiful generative geometric background images from a string
 
 ## WASM
 
-There is [an example](https://github.com/suyash/geopattern/blob/master/examples/wasm.rs) that has been used to create a wasm demo at [https://suy.io/geopattern/](https://suy.io/geopattern/).
+The main crate exports a `generate_minified_svg_string` function through `wasm-bindgen` that can be used to generate a wasm compatible build with `wasm-pack`.
 
-<!--
+There is also a simple test that can be run with
 
-## Patterns
+```
+wasm-pack test --firefox --headless
+```
+
+<!-- ## Patterns
 
 ### Chevrons
 
@@ -76,9 +80,7 @@ There is [an example](https://github.com/suyash/geopattern/blob/master/examples/
 
 ### Xes
 
-<img src="./examples/readme/Xes.svg" />
-
--->
+<img src="./examples/readme/Xes.svg" /> -->
 
 ## License
 

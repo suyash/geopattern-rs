@@ -14,7 +14,20 @@ exclude = [
     ".travis.yml"
 ]
 
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [dependencies]
 base64 = "0.10.1"
 svg = "0.5.12"
 sha1 = "0.6.0"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2.33"
+
+[target.'cfg(target_arch = "wasm32")'.dev-dependencies]
+wasm-bindgen-test = "0.2.33"
+
+# TODO: figure this out
+# [profile.release]
+# opt-level = "s"

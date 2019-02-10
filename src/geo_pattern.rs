@@ -4,7 +4,6 @@ use std::fmt;
 use std::num;
 
 use base64::encode;
-
 use svg::Document;
 use svg::node::element::Rectangle;
 use sha1::Sha1;
