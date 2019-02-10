@@ -1,6 +1,3 @@
-extern crate geopattern;
-extern crate svg;
-
 use geopattern::patterns::Patterns;
 
 fn main() {
