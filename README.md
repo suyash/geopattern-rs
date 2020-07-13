@@ -8,35 +8,35 @@ The sha1 stuff is out, now essentially a bunch of functions that return `svg::Do
 
 ### Chevrons
 
-<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/chevrons.svg)"></div>
+<img src="examples/readme/chevrons.svg">
 
 ### Concentric Circles
 
-<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/concentric_circles.svg)"></div>
+<img src="examples/readme/concentric_circles.svg">
 
 ### Diamonds
 
-<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/diamonds.svg)"></div>
+<img src="examples/readme/diamonds.svg">
 
 ### Hexagons
 
-<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/hexagons.svg)"></div>
+<img src="examples/readme/hexagons.svg">
 
 ### Mosaic Squares
 
-<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/mosaic_squares.svg)"></div>
+<img src="examples/readme/mosaic_squares.svg">
 
 ### Nested Squares
 
-<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/nested_squares.svg)"></div>
+<img src="examples/readme/nested_squares.svg">
 
 ### Octagons
 
-<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/octagons.svg)"></div>
+<img src="examples/readme/octagons.svg">
 
 ### Overlapping Circles
 
-<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/overlapping_circles.svg)"></div>
+<img src="examples/readme/overlapping_circles.svg">
 
 ## License
 
