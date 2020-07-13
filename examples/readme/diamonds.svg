@@ -1,0 +1,28 @@
+<svg height="120" width="240" xmlns="http://www.w3.org/2000/svg">
+<rect fill="rgb(156,209,206)" height="100%" width="100%" x="0" y="0"/>
+<polyline fill="#222" fill-opacity="0.08352941" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(-30, -30)"/>
+<polyline fill="#222" fill-opacity="0.08352941" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(210, -30)"/>
+<polyline fill="#222" fill-opacity="0.08352941" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(-30, 90)"/>
+<polyline fill="#222" fill-opacity="0.08352941" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(210, 90)"/>
+<polyline fill="#222" fill-opacity="0.08666667" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(30, -30)"/>
+<polyline fill="#222" fill-opacity="0.08666667" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(30, 90)"/>
+<polyline fill="#222" fill-opacity="0.04431373" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(90, -30)"/>
+<polyline fill="#222" fill-opacity="0.04431373" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(90, 90)"/>
+<polyline fill="#222" fill-opacity="0.21843138" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(150, -30)"/>
+<polyline fill="#222" fill-opacity="0.21843138" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(150, 90)"/>
+<polyline fill="#222" fill-opacity="0.03333333" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(0, 0)"/>
+<polyline fill="#222" fill-opacity="0.03333333" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(240, 0)"/>
+<polyline fill="#ddd" fill-opacity="0.14235294" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(60, 0)"/>
+<polyline fill="#222" fill-opacity="0.18392156" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(120, 0)"/>
+<polyline fill="#ddd" fill-opacity="0.18156862" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(180, 0)"/>
+<polyline fill="#ddd" fill-opacity="0.1454902" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(-30, 30)"/>
+<polyline fill="#ddd" fill-opacity="0.1454902" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(210, 30)"/>
+<polyline fill="#222" fill-opacity="0.047450982" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(30, 30)"/>
+<polyline fill="#222" fill-opacity="0.21529411" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(90, 30)"/>
+<polyline fill="#222" fill-opacity="0.1462745" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(150, 30)"/>
+<polyline fill="#ddd" fill-opacity="0.06392157" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(0, 60)"/>
+<polyline fill="#ddd" fill-opacity="0.06392157" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(240, 60)"/>
+<polyline fill="#ddd" fill-opacity="0.13294119" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(60, 60)"/>
+<polyline fill="#ddd" fill-opacity="0.20666668" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(120, 60)"/>
+<polyline fill="#222" fill-opacity="0.020784313" points="30,0,60,30,30,60,0,30" stroke="#000" stroke-opacity="0.02" transform="translate(180, 60)"/>
+</svg>
