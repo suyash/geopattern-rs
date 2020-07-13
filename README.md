@@ -1,40 +1,42 @@
 # geopattern
 
+![Continuous Integration](https://github.com/suyash/geopattern-rs/workflows/Continuous%20Integration/badge.svg) [![crates.io badge](https://img.shields.io/crates/v/geopattern.svg)](https://crates.io/crates/geopattern) [![docs.rs badge](https://docs.rs/geopattern/badge.svg)](https://docs.rs/geopattern)
+
 This has been rewritten to be leaner and actually usable.
 
 The sha1 stuff is out, now essentially a bunch of functions that return `svg::Document`.
 
 ### Chevrons
 
-<div style="width:100%;height:12rem;background-image:url(examples/readme/chevrons.svg)"></div>
+<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/chevrons.svg)"></div>
 
 ### Concentric Circles
 
-<div style="width:100%;height:12rem;background-image:url(examples/readme/concentric_circles.svg)"></div>
+<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/concentric_circles.svg)"></div>
 
 ### Diamonds
 
-<div style="width:100%;height:12rem;background-image:url(examples/readme/diamonds.svg)"></div>
+<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/diamonds.svg)"></div>
 
 ### Hexagons
 
-<div style="width:100%;height:12rem;background-image:url(examples/readme/hexagons.svg)"></div>
+<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/hexagons.svg)"></div>
 
 ### Mosaic Squares
 
-<div style="width:100%;height:12rem;background-image:url(examples/readme/mosaic_squares.svg)"></div>
+<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/mosaic_squares.svg)"></div>
 
 ### Nested Squares
 
-<div style="width:100%;height:12rem;background-image:url(examples/readme/nested_squares.svg)"></div>
+<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/nested_squares.svg)"></div>
 
 ### Octagons
 
-<div style="width:100%;height:12rem;background-image:url(examples/readme/octagons.svg)"></div>
+<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/octagons.svg)"></div>
 
 ### Overlapping Circles
 
-<div style="width:100%;height:12rem;background-image:url(examples/readme/overlapping_circles.svg)"></div>
+<div style="width:100%;height:12rem;background-image:url(https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/overlapping_circles.svg)"></div>
 
 ## License
 
