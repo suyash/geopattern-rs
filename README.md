@@ -6,6 +6,8 @@ This has been rewritten to be leaner and actually usable.
 
 The sha1 stuff is out, now essentially a bunch of functions that return `svg::Document`.
 
+In the cleanup, removed error handling and now the code has a bunch of `assert_eq!` calls. Maybe reconsider that.
+
 ### Chevrons
 
 <img src="examples/readme/chevrons.svg">
@@ -37,6 +39,38 @@ The sha1 stuff is out, now essentially a bunch of functions that return `svg::Do
 ### Overlapping Circles
 
 <img src="examples/readme/overlapping_circles.svg">
+
+### Overlapping Rings
+
+<img src="examples/readme/overlapping_rings.svg">
+
+### Plaid
+
+<img src="examples/readme/plaid.svg">
+
+### Plus Signs
+
+<img src="examples/readme/plus_signs.svg">
+
+### Sine Waves
+
+<img src="examples/readme/sine_waves.svg">
+
+### Squares
+
+<img src="examples/readme/squares.svg">
+
+### Tesselation
+
+<img src="examples/readme/tesselation.svg">
+
+### Triangles
+
+<img src="examples/readme/triangles.svg">
+
+### Xes
+
+<img src="examples/readme/xes.svg">
 
 ## License
 

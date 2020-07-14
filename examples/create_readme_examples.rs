@@ -3,7 +3,8 @@ use svg::save;
 
 use geopattern::{
     chevrons, concentric_circles, diamonds, hexagons, mosaic_squares, nested_squares, octagons,
-    overlapping_circles, Fill,
+    overlapping_circles, overlapping_rings, plaid, plus_signs, sine_waves, squares, tesselation,
+    triangles, xes, Fill,
 };
 
 fn main() -> anyhow::Result<()> {
@@ -17,6 +18,14 @@ fn main() -> anyhow::Result<()> {
     write_nested_squares(&digest)?;
     write_octagons(&digest)?;
     write_overlapping_circles(&digest)?;
+    write_overlapping_rings(&digest)?;
+    write_plaid(&digest)?;
+    write_plus_signs(&digest)?;
+    write_sine_waves(&digest)?;
+    write_squares(&digest)?;
+    write_tesselation(&digest)?;
+    write_triangles(&digest)?;
+    write_xes(&digest)?;
 
     Ok(())
 }
@@ -219,6 +228,182 @@ fn write_overlapping_circles(digest: &[u8]) -> anyhow::Result<()> {
                     .collect::<Vec<f32>>(),
             ),
             &format!("rgb({},{},{})", digest[15], digest[14], digest[13]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_overlapping_rings(digest: &[u8]) -> anyhow::Result<()> {
+    save(
+        "examples/readme/overlapping_rings.svg",
+        &overlapping_rings(
+            40.0,
+            (4, 4),
+            Fill::new(
+                &(0..16)
+                    .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
+                    .collect::<Vec<&str>>(),
+                &(0..16)
+                    .map(|i| 0.02 + (digest[i] as f32 * 0.2) / 255.0)
+                    .collect::<Vec<f32>>(),
+            ),
+            &format!("rgb({},{},{})", digest[15], digest[16], digest[17]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_plaid(digest: &[u8]) -> anyhow::Result<()> {
+    save(
+        "examples/readme/plaid.svg",
+        &plaid(
+            &(0..19)
+                .map(|v| 5.0 + (digest[v] as f32 * 8.0) / 255.0)
+                .collect::<Vec<f32>>(),
+            &(1..20)
+                .map(|v| 5.0 + (digest[v] as f32 * 8.0) / 255.0)
+                .collect::<Vec<f32>>(),
+            Fill::new(
+                &(0..19)
+                    .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
+                    .collect::<Vec<&str>>(),
+                &(0..19)
+                    .map(|i| 0.02 + (digest[i] as f32 * 0.2) / 255.0)
+                    .collect::<Vec<f32>>(),
+            ),
+            &format!("rgb({},{},{})", digest[14], digest[16], digest[17]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_plus_signs(digest: &[u8]) -> anyhow::Result<()> {
+    save(
+        "examples/readme/plus_signs.svg",
+        &plus_signs(
+            24.0,
+            (4, 4),
+            Fill::new(
+                &(0..16)
+                    .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
+                    .collect::<Vec<&str>>(),
+                &(0..16)
+                    .map(|i| 0.02 + (digest[i] as f32 * 0.4) / 255.0)
+                    .collect::<Vec<f32>>(),
+            ),
+            ("#ddd", 0.02),
+            &format!("rgb({},{},{})", digest[12], digest[16], digest[17]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_sine_waves(digest: &[u8]) -> anyhow::Result<()> {
+    save(
+        "examples/readme/sine_waves.svg",
+        &sine_waves(
+            300.0,
+            80.0,
+            10.0,
+            Fill::new(
+                &(0..16)
+                    .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
+                    .collect::<Vec<&str>>(),
+                &(0..16)
+                    .map(|i| 0.02 + (digest[i] as f32 * 0.4) / 255.0)
+                    .collect::<Vec<f32>>(),
+            ),
+            &format!("rgb({},{},{})", digest[10], digest[13], digest[14]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_squares(digest: &[u8]) -> anyhow::Result<()> {
+    save(
+        "examples/readme/squares.svg",
+        &squares(
+            48.0,
+            (4, 4),
+            Fill::new(
+                &(2..18)
+                    .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
+                    .collect::<Vec<&str>>(),
+                &(2..18)
+                    .map(|i| 0.02 + (digest[i] as f32 * 0.4) / 255.0)
+                    .collect::<Vec<f32>>(),
+            ),
+            ("#ddd", 0.02),
+            &format!("rgb({},{},{})", digest[8], digest[10], digest[14]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_tesselation(digest: &[u8]) -> anyhow::Result<()> {
+    save(
+        "examples/readme/tesselation.svg",
+        &tesselation(
+            48.0,
+            Fill::new(
+                &(0..20)
+                    .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
+                    .collect::<Vec<&str>>(),
+                &(0..20)
+                    .map(|i| 0.1 + (digest[i] as f32 * 0.4) / 255.0)
+                    .collect::<Vec<f32>>(),
+            ),
+            ("#ddd", 0.02),
+            &format!("rgb({},{},{})", digest[6], digest[4], digest[14]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_triangles(digest: &[u8]) -> anyhow::Result<()> {
+    save(
+        "examples/readme/triangles.svg",
+        &triangles(
+            72.0,
+            (4, 4),
+            Fill::new(
+                &(2..18)
+                    .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
+                    .collect::<Vec<&str>>(),
+                &(2..18)
+                    .map(|i| 0.02 + (digest[i] as f32 * 0.4) / 255.0)
+                    .collect::<Vec<f32>>(),
+            ),
+            ("#ddd", 0.02),
+            &format!("rgb({},{},{})", digest[2], digest[8], digest[16]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_xes(digest: &[u8]) -> anyhow::Result<()> {
+    save(
+        "examples/readme/xes.svg",
+        &xes(
+            48.0,
+            (4, 4),
+            Fill::new(
+                &(2..18)
+                    .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
+                    .collect::<Vec<&str>>(),
+                &(2..18)
+                    .map(|i| 0.1 + (digest[i] as f32 * 0.2) / 255.0)
+                    .collect::<Vec<f32>>(),
+            ),
+            &format!("rgb({},{},{})", digest[8], digest[12], digest[16]),
         ),
     )?;
 

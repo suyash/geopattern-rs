@@ -1,0 +1,29 @@
+<svg height="262.27686" width="227.13843" xmlns="http://www.w3.org/2000/svg">
+<rect fill="rgb(209,17,238)" height="100%" width="100%" x="0" y="0"/>
+<rect fill="#222" fill-opacity="0.22705883" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" width="48" x="-24" y="-24"/>
+<rect fill="#222" fill-opacity="0.22705883" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" width="48" x="203.13843" y="-24"/>
+<rect fill="#222" fill-opacity="0.22705883" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" width="48" x="-24" y="238.27686"/>
+<rect fill="#222" fill-opacity="0.22705883" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" width="48" x="203.13843" y="238.27686"/>
+<rect fill="#222" fill-opacity="0.23333335" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" width="48" x="89.569214" y="41.569218"/>
+<rect fill="#222" fill-opacity="0.14862746" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" width="48" x="-24" y="107.13843"/>
+<rect fill="#222" fill-opacity="0.14862746" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" width="48" x="203.13843" y="107.13843"/>
+<rect fill="#222" fill-opacity="0.49686277" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" width="48" x="89.569214" y="172.70766"/>
+<polyline fill="#222" fill-opacity="0.12666667" points="0,0,41.569218,24,0,48,0,0" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(24, -24) rotate(0, 24, 20.784609)"/>
+<polyline fill="#222" fill-opacity="0.12666667" points="0,0,41.569218,24,0,48,0,0" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(24, 286.27686) rotate(0, 24, 20.784609) scale(1, -1)"/>
+<polyline fill="#ddd" fill-opacity="0.34470588" points="0,0,41.569218,24,0,48,0,0" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(203.13843, -24) rotate(0, 24, 20.784609) scale(-1, 1)"/>
+<polyline fill="#ddd" fill-opacity="0.34470588" points="0,0,41.569218,24,0,48,0,0" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(203.13843, 286.27686) rotate(0, 24, 20.784609) scale(-1, -1)"/>
+<polyline fill="#222" fill-opacity="0.42784312" points="0,0,41.569218,24,0,48,0,0" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(137.56921, 41.569218)"/>
+<polyline fill="#ddd" fill-opacity="0.42313725" points="0,0,41.569218,24,0,48,0,0" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(89.569214, 41.569218) scale(-1, 1)"/>
+<polyline fill="#ddd" fill-opacity="0.3509804" points="0,0,41.569218,24,0,48,0,0" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(137.56921, 220.70764) scale(1, -1)"/>
+<polyline fill="#222" fill-opacity="0.15490197" points="0,0,41.569218,24,0,48,0,0" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(89.569214, 220.70764) scale(-1, -1)"/>
+<polyline fill="#222" fill-opacity="0.49058822" points="0,0,41.569218,24,0,48,0,0" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(24, 107.13843)"/>
+<polyline fill="#222" fill-opacity="0.35254902" points="0,0,41.569218,24,0,48,0,0" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(203.13843, 107.13843) scale(-1, 1)"/>
+<rect fill="#ddd" fill-opacity="0.18784314" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(24, 24) rotate(-30, 0, 0)" width="48" x="0" y="0"/>
+<rect fill="#ddd" fill-opacity="0.32588238" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="scale(-1, 1) translate(-203.13843, 24) rotate(-30, 0, 0)" width="48" x="0" y="0"/>
+<rect fill="#ddd" fill-opacity="0.47333336" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="translate(24, 59.138428) rotate(30, 0, 48)" width="48" x="0" y="0"/>
+<rect fill="#222" fill-opacity="0.10156863" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="scale(-1, 1) translate(-203.13843, 59.138428) rotate(30, 0, 48)" width="48" x="0" y="0"/>
+<rect fill="#222" fill-opacity="0.22392157" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="scale(1, -1) translate(24, -203.13843) rotate(30, 0, 48)" width="48" x="0" y="0"/>
+<rect fill="#222" fill-opacity="0.32117647" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="scale(-1, -1) translate(-203.13843, -203.13843) rotate(30, 0, 48)" width="48" x="0" y="0"/>
+<rect fill="#222" fill-opacity="0.23019609" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="scale(1, -1) translate(24, -238.27686) rotate(-30, 0, 0)" width="48" x="0" y="0"/>
+<rect fill="#222" fill-opacity="0.38705882" height="48" stroke="#ddd" stroke-opacity="0.02" stroke-width="1" transform="scale(-1, -1) translate(-203.13843, -238.27686) rotate(-30, 0, 0)" width="48" x="0" y="0"/>
+</svg>
