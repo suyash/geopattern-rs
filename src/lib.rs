@@ -3,21 +3,24 @@
 #![deny(missing_docs)]
 
 use svg::node::element::{Circle, Group, Path, Polyline, Rectangle};
+use svg::node::Value;
 use svg::Document;
 
-/// Fill defines properties for fill colors
-pub struct Fill<'a> {
-    color: &'a [&'a str],
-    opacity: &'a [f32],
-}
-
-impl<'a> Fill<'a> {
-    /// create new Fill
-    pub fn new(color: &'a [&'a str], opacity: &'a [f32]) -> Self {
-        debug_assert_eq!(color.len(), opacity.len());
-
-        Fill { color, opacity }
-    }
+fn create_document<'a, V>((width, height): (V, V), background_color: &'a str) -> Document
+where
+    V: Into<Value>,
+{
+    Document::new()
+        .set("width", width)
+        .set("height", height)
+        .add(
+            Rectangle::new()
+                .set("x", 0)
+                .set("y", 0)
+                .set("width", "100%")
+                .set("height", "100%")
+                .set("fill", background_color),
+        )
 }
 
 /// chevrons
@@ -25,12 +28,12 @@ impl<'a> Fill<'a> {
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/chevrons.svg)
 ///
 /// ```
-/// use geopattern::{Fill, chevrons};
+/// use geopattern::chevrons;
 ///
 /// let c = chevrons(
 ///     60.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -43,11 +46,12 @@ impl<'a> Fill<'a> {
 pub fn chevrons<'a>(
     chevron_width: f32,
     (width, height): (usize, usize),
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), width * height);
+    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
 
     let (stroke_color, stroke_opacity) = stroke;
 
@@ -78,25 +82,21 @@ pub fn chevrons<'a>(
     };
     let c = chevron(chevron_width, chevron_width);
 
-    let mut doc = Document::new()
-        .set("width", chevron_width * width as f32)
-        .set("height", chevron_width * height as f32 * 0.66)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (
+            chevron_width * width as f32,
+            chevron_width * height as f32 * 0.66,
+        ),
+        background_color,
+    );
 
     for y in 0..height {
         for x in 0..width {
             let ix = y * width + x;
 
             let g = Group::new()
-                .set("fill", fill.color[ix])
-                .set("fill-opacity", fill.opacity[ix])
+                .set("fill", fill.0[ix])
+                .set("fill-opacity", fill.1[ix])
                 .set("stroke", stroke_color)
                 .set("stroke-opacity", stroke_opacity)
                 .set("stroke-width", 1)
@@ -133,17 +133,17 @@ pub fn chevrons<'a>(
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/concentric_circles.svg)
 ///
 /// ```
-/// use geopattern::{Fill, concentric_circles};
+/// use geopattern::concentric_circles;
 ///
 /// let c = concentric_circles(
 ///     20.0,
 ///     4.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
-///     Fill::new(
+///     (
 ///         &(0..4).rev().map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).rev().map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -156,26 +156,21 @@ pub fn concentric_circles<'a>(
     diameter: f32,
     concentric_width: f32,
     (width, height): (usize, usize),
-    fill_outer: Fill<'a>,
-    fill_inner: Fill<'a>,
+    fill_outer: (&'a [&'a str], &'a [f32]),
+    fill_inner: (&'a [&'a str], &'a [f32]),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill_outer.opacity.len(), width * height);
-    debug_assert_eq!(fill_inner.opacity.len(), width * height);
+    debug_assert_eq!(fill_outer.0.len(), width * height);
+    debug_assert_eq!(fill_inner.0.len(), width * height);
+    debug_assert_eq!(fill_outer.0.len(), fill_outer.1.len());
+    debug_assert_eq!(fill_inner.0.len(), fill_inner.1.len());
 
     let diameter = diameter + concentric_width;
 
-    let mut doc = Document::new()
-        .set("width", diameter * width as f32)
-        .set("height", diameter * height as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (diameter * width as f32, diameter * height as f32),
+        background_color,
+    );
 
     for y in 0..height {
         for x in 0..width {
@@ -192,12 +187,12 @@ pub fn concentric_circles<'a>(
                     .set("cx", cx)
                     .set("cy", cy)
                     .set("r", diameter / 2.0)
-                    .set("stroke", fill_outer.color[ix])
+                    .set("stroke", fill_outer.0[ix])
                     .set(
                         "style",
                         format!(
                             "opacity:{}; stroke-width:0x{:X};",
-                            fill_outer.opacity[ix],
+                            fill_outer.1[ix],
                             (concentric_width as i64)
                         ),
                     ),
@@ -208,8 +203,8 @@ pub fn concentric_circles<'a>(
                     .set("cx", cx)
                     .set("cy", cy)
                     .set("r", diameter / 4.0)
-                    .set("fill", fill_inner.color[ix])
-                    .set("fill-opacity", fill_inner.opacity[ix]),
+                    .set("fill", fill_inner.0[ix])
+                    .set("fill-opacity", fill_inner.1[ix]),
             );
         }
     }
@@ -222,12 +217,12 @@ pub fn concentric_circles<'a>(
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/diamonds.svg)
 ///
 /// ```
-/// use geopattern::{Fill, diamonds};
+/// use geopattern::diamonds;
 ///
 /// let c = diamonds(
 ///     (20.0, 20.0),
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -240,11 +235,12 @@ pub fn concentric_circles<'a>(
 pub fn diamonds<'a>(
     (diamond_width, diamond_height): (f32, f32),
     (width, height): (usize, usize),
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), width * height);
+    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
 
     let points = format!(
         "{},0,{},{},{},{},0,{}",
@@ -258,17 +254,13 @@ pub fn diamonds<'a>(
 
     let (stroke_color, stroke_opacity) = stroke;
 
-    let mut doc = Document::new()
-        .set("width", diamond_width * width as f32)
-        .set("height", diamond_height * height as f32 / 2.0)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (
+            diamond_width * width as f32,
+            diamond_height * height as f32 / 2.0,
+        ),
+        background_color,
+    );
 
     for y in 0..height {
         for x in 0..width {
@@ -276,8 +268,8 @@ pub fn diamonds<'a>(
 
             let polyline = Polyline::new()
                 .set("points", points.as_str())
-                .set("fill", fill.color[ix])
-                .set("fill-opacity", fill.opacity[ix])
+                .set("fill", fill.0[ix])
+                .set("fill-opacity", fill.1[ix])
                 .set("stroke", stroke_color)
                 .set("stroke-opacity", stroke_opacity);
 
@@ -338,12 +330,12 @@ pub fn diamonds<'a>(
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/hexagons.svg)
 ///
 /// ```
-/// use geopattern::{Fill, hexagons};
+/// use geopattern::hexagons;
 ///
 /// let c = hexagons(
 ///     20.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -356,11 +348,12 @@ pub fn diamonds<'a>(
 pub fn hexagons<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), width * height);
+    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
 
     let hexagon_width = side * 2.0;
     let hexagon_height = side * (3.0 as f32).sqrt();
@@ -381,17 +374,13 @@ pub fn hexagons<'a>(
         b
     );
 
-    let mut doc = Document::new()
-        .set("width", (hexagon_width + side) * width as f32 / 2.0)
-        .set("height", hexagon_height * height as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (
+            (hexagon_width + side) * width as f32 / 2.0,
+            hexagon_height * height as f32,
+        ),
+        background_color,
+    );
 
     for y in 0..height {
         for x in 0..width {
@@ -399,8 +388,8 @@ pub fn hexagons<'a>(
 
             let polyline = Polyline::new()
                 .set("points", points.as_str())
-                .set("fill", fill.color[ix])
-                .set("fill-opacity", fill.opacity[ix])
+                .set("fill", fill.0[ix])
+                .set("fill-opacity", fill.1[ix])
                 .set("stroke", stroke.0)
                 .set("stroke-opacity", stroke.1);
 
@@ -466,16 +455,16 @@ pub fn hexagons<'a>(
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/mosaic_squares.svg)
 ///
 /// ```
-/// use geopattern::{Fill, mosaic_squares};
+/// use geopattern::mosaic_squares;
 ///
 /// let c = mosaic_squares(
 ///     20.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
-///     Fill::new(
+///     (
 ///         &(0..4).rev().map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).rev().map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -488,33 +477,28 @@ pub fn hexagons<'a>(
 pub fn mosaic_squares<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill_outer: Fill<'a>,
-    fill_inner: Fill<'a>,
+    fill_outer: (&'a [&'a str], &'a [f32]),
+    fill_inner: (&'a [&'a str], &'a [f32]),
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill_outer.opacity.len(), width * height);
-    debug_assert_eq!(fill_inner.opacity.len(), width * height);
+    debug_assert_eq!(fill_outer.0.len(), width * height);
+    debug_assert_eq!(fill_inner.0.len(), width * height);
+    debug_assert_eq!(fill_outer.0.len(), fill_outer.1.len());
+    debug_assert_eq!(fill_inner.0.len(), fill_inner.1.len());
 
-    let mut doc = Document::new()
-        .set("width", side * width as f32 * 2.0)
-        .set("height", side * height as f32 * 2.0)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (side * width as f32 * 2.0, side * height as f32 * 2.0),
+        background_color,
+    );
 
     let draw_outer_tile = |mut doc: Document, x: f32, y: f32, ix: usize| {
         let points = format!("0,0,{},{},0,{},0,0", side, side, side);
 
         let polyline = Polyline::new()
             .set("points", points)
-            .set("fill", fill_outer.color[ix])
-            .set("fill-opacity", fill_outer.opacity[ix])
+            .set("fill", fill_outer.0[ix])
+            .set("fill-opacity", fill_outer.1[ix])
             .set("stroke", stroke.0)
             .set("stroke-opacity", stroke.1);
 
@@ -546,8 +530,8 @@ pub fn mosaic_squares<'a>(
 
         let polyline = Polyline::new()
             .set("points", points.as_str())
-            .set("fill", fill_outer.color[ix])
-            .set("fill-opacity", fill_outer.opacity[ix])
+            .set("fill", fill_outer.0[ix])
+            .set("fill-opacity", fill_outer.1[ix])
             .set("stroke", stroke.0)
             .set("stroke-opacity", stroke.1);
 
@@ -563,8 +547,8 @@ pub fn mosaic_squares<'a>(
 
         let polyline = Polyline::new()
             .set("points", points)
-            .set("fill", fill_inner.color[ix])
-            .set("fill-opacity", fill_inner.opacity[ix])
+            .set("fill", fill_inner.0[ix])
+            .set("fill-opacity", fill_inner.1[ix])
             .set("stroke", stroke.0)
             .set("stroke-opacity", stroke.1);
 
@@ -636,16 +620,16 @@ pub fn mosaic_squares<'a>(
 /// TODO: make `outer_side` independent of `inner_side`, currently evaluates to `7 * inner_side`
 ///
 /// ```
-/// use geopattern::{Fill, nested_squares};
+/// use geopattern::nested_squares;
 ///
 /// let c = nested_squares(
 ///     60.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
-///     Fill::new(
+///     (
 ///         &(0..4).rev().map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).rev().map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -657,26 +641,24 @@ pub fn mosaic_squares<'a>(
 pub fn nested_squares<'a>(
     inner_side: f32,
     (width, height): (usize, usize),
-    stroke_outer: Fill<'a>,
-    fill_inner: Fill<'a>,
+    stroke_outer: (&'a [&'a str], &'a [f32]),
+    fill_inner: (&'a [&'a str], &'a [f32]),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill_inner.opacity.len(), width * height);
-    debug_assert_eq!(stroke_outer.color.len(), width * height);
+    debug_assert_eq!(fill_inner.0.len(), width * height);
+    debug_assert_eq!(stroke_outer.0.len(), width * height);
+    debug_assert_eq!(fill_inner.0.len(), fill_inner.1.len());
+    debug_assert_eq!(stroke_outer.0.len(), stroke_outer.1.len());
 
     let outer_side = inner_side * 7.0;
 
-    let mut doc = Document::new()
-        .set("width", (inner_side * 2.0 + outer_side) * width as f32)
-        .set("height", (inner_side * 2.0 + outer_side) * height as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (
+            (inner_side * 2.0 + outer_side) * width as f32,
+            (inner_side * 2.0 + outer_side) * height as f32,
+        ),
+        background_color,
+    );
 
     for y in 0..height {
         for x in 0..width {
@@ -696,12 +678,12 @@ pub fn nested_squares<'a>(
                     .set("width", outer_side)
                     .set("height", outer_side)
                     .set("fill", "none")
-                    .set("stroke", stroke_outer.color[ix])
+                    .set("stroke", stroke_outer.0[ix])
                     .set(
                         "style",
                         format!(
                             "opacity:{};stroke-width:{};",
-                            stroke_outer.opacity[ix], inner_side
+                            stroke_outer.1[ix], inner_side
                         ),
                     ),
             );
@@ -726,13 +708,10 @@ pub fn nested_squares<'a>(
                     .set("width", inner_side * 3.0)
                     .set("height", inner_side * 3.0)
                     .set("fill", "none")
-                    .set("stroke", fill_inner.color[ix])
+                    .set("stroke", fill_inner.0[ix])
                     .set(
                         "style",
-                        format!(
-                            "opacity:{};stroke-width:{};",
-                            fill_inner.opacity[ix], inner_side
-                        ),
+                        format!("opacity:{};stroke-width:{};", fill_inner.1[ix], inner_side),
                     ),
             );
         }
@@ -746,12 +725,12 @@ pub fn nested_squares<'a>(
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/octagons.svg)
 ///
 /// ```
-/// use geopattern::{Fill, octagons};
+/// use geopattern::octagons;
 ///
 /// let c = octagons(
 ///     60.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -764,23 +743,17 @@ pub fn nested_squares<'a>(
 pub fn octagons<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), width * height);
+    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
 
-    let mut doc = Document::new()
-        .set("width", side * width as f32)
-        .set("height", side * height as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (side * width as f32, side * height as f32),
+        background_color,
+    );
 
     let c = 0.33 * side;
     let points = format!(
@@ -807,8 +780,8 @@ pub fn octagons<'a>(
             doc = doc.add(
                 Polyline::new()
                     .set("points", points.as_str())
-                    .set("fill", fill.color[ix])
-                    .set("fill-opacity", fill.opacity[ix])
+                    .set("fill", fill.0[ix])
+                    .set("fill-opacity", fill.1[ix])
                     .set("stroke", stroke.0)
                     .set("stroke-opacity", stroke.1)
                     .set(
@@ -827,12 +800,12 @@ pub fn octagons<'a>(
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/overlapping_circles.svg)
 ///
 /// ```
-/// use geopattern::{Fill, overlapping_circles};
+/// use geopattern::overlapping_circles;
 ///
 /// let c = overlapping_circles(
 ///     60.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -844,22 +817,16 @@ pub fn octagons<'a>(
 pub fn overlapping_circles<'a>(
     radius: f32,
     (width, height): (usize, usize),
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), width * height);
+    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
 
-    let mut doc = Document::new()
-        .set("width", radius * width as f32)
-        .set("height", radius * height as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (radius * width as f32, radius * height as f32),
+        background_color,
+    );
 
     for y in 0..height {
         for x in 0..width {
@@ -870,8 +837,8 @@ pub fn overlapping_circles<'a>(
                     .set("cx", x as f32 * radius)
                     .set("cy", y as f32 * radius)
                     .set("r", radius)
-                    .set("fill", fill.color[ix])
-                    .set("style", format!("opacity:{};", fill.opacity[ix])),
+                    .set("fill", fill.0[ix])
+                    .set("style", format!("opacity:{};", fill.1[ix])),
             );
 
             if x == 0 {
@@ -880,8 +847,8 @@ pub fn overlapping_circles<'a>(
                         .set("cx", width as f32 * radius)
                         .set("cy", y as f32 * radius)
                         .set("r", radius)
-                        .set("fill", fill.color[ix])
-                        .set("style", format!("opacity:{};", fill.opacity[ix])),
+                        .set("fill", fill.0[ix])
+                        .set("style", format!("opacity:{};", fill.1[ix])),
                 )
             }
 
@@ -891,8 +858,8 @@ pub fn overlapping_circles<'a>(
                         .set("cx", x as f32 * radius)
                         .set("cy", height as f32 * radius)
                         .set("r", radius)
-                        .set("fill", fill.color[ix])
-                        .set("style", format!("opacity:{};", fill.opacity[ix])),
+                        .set("fill", fill.0[ix])
+                        .set("style", format!("opacity:{};", fill.1[ix])),
                 )
             }
 
@@ -902,8 +869,8 @@ pub fn overlapping_circles<'a>(
                         .set("cx", width as f32 * radius)
                         .set("cy", height as f32 * radius)
                         .set("r", radius)
-                        .set("fill", fill.color[ix])
-                        .set("style", format!("opacity:{};", fill.opacity[ix])),
+                        .set("fill", fill.0[ix])
+                        .set("style", format!("opacity:{};", fill.1[ix])),
                 )
             }
         }
@@ -919,12 +886,12 @@ pub fn overlapping_circles<'a>(
 /// TODO: consider having an `outer_radius`?
 ///
 /// ```
-/// use geopattern::{Fill, overlapping_rings};
+/// use geopattern::overlapping_rings;
 ///
 /// let c = overlapping_rings(
 ///     60.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -936,22 +903,16 @@ pub fn overlapping_circles<'a>(
 pub fn overlapping_rings<'a>(
     radius: f32,
     (width, height): (usize, usize),
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), width * height);
+    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
 
-    let mut doc = Document::new()
-        .set("width", radius * width as f32)
-        .set("height", radius * height as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (radius * width as f32, radius * height as f32),
+        background_color,
+    );
 
     for y in 0..height {
         for x in 0..width {
@@ -963,14 +924,10 @@ pub fn overlapping_rings<'a>(
                     .set("cy", y as f32 * radius)
                     .set("r", radius - radius / 8.0)
                     .set("fill", "none")
-                    .set("stroke", fill.color[ix])
+                    .set("stroke", fill.0[ix])
                     .set(
                         "style",
-                        format!(
-                            "opacity:{};stroke-width:{};",
-                            fill.opacity[ix],
-                            radius / 4.0
-                        ),
+                        format!("opacity:{};stroke-width:{};", fill.1[ix], radius / 4.0),
                     ),
             );
 
@@ -981,14 +938,10 @@ pub fn overlapping_rings<'a>(
                         .set("cy", (y as f32) * radius)
                         .set("r", radius - radius / 8.0)
                         .set("fill", "none")
-                        .set("stroke", fill.color[ix])
+                        .set("stroke", fill.0[ix])
                         .set(
                             "style",
-                            format!(
-                                "opacity:{};stroke-width:{};",
-                                fill.opacity[ix],
-                                radius / 4.0
-                            ),
+                            format!("opacity:{};stroke-width:{};", fill.1[ix], radius / 4.0),
                         ),
                 )
             }
@@ -1000,14 +953,10 @@ pub fn overlapping_rings<'a>(
                         .set("cy", height as f32 * radius)
                         .set("r", radius - radius / 8.0)
                         .set("fill", "none")
-                        .set("stroke", fill.color[ix])
+                        .set("stroke", fill.0[ix])
                         .set(
                             "style",
-                            format!(
-                                "opacity:{};stroke-width:{};",
-                                fill.opacity[ix],
-                                radius / 4.0
-                            ),
+                            format!("opacity:{};stroke-width:{};", fill.1[ix], radius / 4.0),
                         ),
                 )
             }
@@ -1019,14 +968,10 @@ pub fn overlapping_rings<'a>(
                         .set("cy", height as f32 * radius)
                         .set("r", radius - radius / 8.0)
                         .set("fill", "none")
-                        .set("stroke", fill.color[ix])
+                        .set("stroke", fill.0[ix])
                         .set(
                             "style",
-                            format!(
-                                "opacity:{};stroke-width:{};",
-                                fill.opacity[ix],
-                                radius / 4.0
-                            ),
+                            format!("opacity:{};stroke-width:{};", fill.1[ix], radius / 4.0),
                         ),
                 )
             }
@@ -1041,12 +986,12 @@ pub fn overlapping_rings<'a>(
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/plaid.svg)
 ///
 /// ```
-/// use geopattern::{Fill, plaid};
+/// use geopattern::plaid;
 ///
 /// let c = plaid(
 ///     &(0..4).map(|v| 5.0 + v as f32 * 4.0).collect::<Vec<f32>>(),
 ///     &(0..4).map(|v| 3.0 + v as f32 * 7.0).collect::<Vec<f32>>(),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -1058,24 +1003,19 @@ pub fn overlapping_rings<'a>(
 pub fn plaid<'a>(
     distances: &'a [f32],
     sizes: &'a [f32],
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     background_color: &'a str,
 ) -> Document {
+    debug_assert_eq!(fill.0.len(), fill.1.len());
+
     let n = distances.len();
 
     debug_assert_eq!(sizes.len(), n);
-    debug_assert_eq!(fill.opacity.len(), n);
+    debug_assert_eq!(fill.0.len(), n);
 
     let (mut w, mut h) = (0.0, 0.0);
 
-    let mut doc = Document::new().add(
-        Rectangle::new()
-            .set("x", 0)
-            .set("y", 0)
-            .set("width", "100%")
-            .set("height", "100%")
-            .set("fill", background_color),
-    );
+    let mut doc = create_document((0, 0), background_color);
 
     for i in 0..n {
         h += distances[i];
@@ -1086,8 +1026,8 @@ pub fn plaid<'a>(
                 .set("y", h)
                 .set("width", "100%")
                 .set("height", sizes[i])
-                .set("opacity", fill.opacity[i])
-                .set("fill", fill.color[i]),
+                .set("opacity", fill.1[i])
+                .set("fill", fill.0[i]),
         );
 
         h += sizes[i];
@@ -1102,8 +1042,8 @@ pub fn plaid<'a>(
                 .set("y", 0)
                 .set("width", sizes[i])
                 .set("height", "100%")
-                .set("opacity", fill.opacity[i])
-                .set("fill", fill.color[i]),
+                .set("opacity", fill.1[i])
+                .set("fill", fill.0[i]),
         );
 
         w += sizes[i];
@@ -1132,12 +1072,12 @@ fn plus(side: f32) -> (Rectangle, Rectangle) {
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/plus_signs.svg)
 ///
 /// ```
-/// use geopattern::{Fill, plus_signs};
+/// use geopattern::plus_signs;
 ///
 /// let c = plus_signs(
 ///     60.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -1150,23 +1090,17 @@ fn plus(side: f32) -> (Rectangle, Rectangle) {
 pub fn plus_signs<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), width * height);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.0.len(), width * height);
 
-    let mut doc = Document::new()
-        .set("width", side * 2.0 * width as f32)
-        .set("height", side * 2.0 * height as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (side * 2.0 * width as f32, side * 2.0 * height as f32),
+        background_color,
+    );
 
     let length = side * 3.0;
 
@@ -1179,10 +1113,10 @@ pub fn plus_signs<'a>(
             let dx = (y % 2) as f32;
 
             let g = Group::new()
-                .set("fill", fill.color[ix])
+                .set("fill", fill.0[ix])
                 .set("stroke", stroke.0)
                 .set("stroke-opacity", stroke.1)
-                .set("style", format!("fill-opacity:{};", fill.opacity[ix]))
+                .set("style", format!("fill-opacity:{};", fill.1[ix]))
                 .add(rects.0.clone())
                 .add(rects.1.clone());
 
@@ -1238,13 +1172,13 @@ pub fn plus_signs<'a>(
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/sine_waves.svg)
 ///
 /// ```
-/// use geopattern::{Fill, sine_waves};
+/// use geopattern::sine_waves;
 ///
 /// let c = sine_waves(
 ///     120.0,
 ///     80.0,
 ///     20.0,
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -1257,22 +1191,14 @@ pub fn sine_waves<'a>(
     period: f32,
     a: f32,
     ww: f32,
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     background_color: &'a str,
 ) -> Document {
-    let n = fill.opacity.len();
+    debug_assert_eq!(fill.0.len(), fill.1.len());
 
-    let mut svg = Document::new()
-        .set("width", period)
-        .set("height", ww * n as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let n = fill.0.len();
+
+    let mut doc = create_document((period, ww * n as f32), background_color);
 
     for i in 0..n {
         let xoff = (period / 4.0) * 0.7;
@@ -1297,13 +1223,13 @@ pub fn sine_waves<'a>(
                 ),
             )
             .set("fill", "none")
-            .set("stroke", fill.color[i])
+            .set("stroke", fill.0[i])
             .set(
                 "style",
-                format!("opacity:{};stroke-width:{};", fill.opacity[i], ww),
+                format!("opacity:{};stroke-width:{};", fill.1[i], ww),
             );
 
-        svg = svg.add(path.clone().set(
+        doc = doc.add(path.clone().set(
             "transform",
             format!(
                 "translate(-{}, {})",
@@ -1312,7 +1238,7 @@ pub fn sine_waves<'a>(
             ),
         ));
 
-        svg = svg.add(path.clone().set(
+        doc = doc.add(path.clone().set(
             "transform",
             format!(
                 "translate(-{}, {})",
@@ -1322,7 +1248,7 @@ pub fn sine_waves<'a>(
         ));
     }
 
-    svg
+    doc
 }
 
 /// squares
@@ -1330,12 +1256,12 @@ pub fn sine_waves<'a>(
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/squares.svg)
 ///
 /// ```
-/// use geopattern::{Fill, squares};
+/// use geopattern::squares;
 ///
 /// let c = squares(
 ///     60.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -1348,23 +1274,17 @@ pub fn sine_waves<'a>(
 pub fn squares<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), width * height);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.0.len(), width * height);
 
-    let mut doc = Document::new()
-        .set("width", side * width as f32)
-        .set("height", side * height as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (side * width as f32, side * height as f32),
+        background_color,
+    );
 
     for y in 0..height {
         for x in 0..width {
@@ -1376,8 +1296,8 @@ pub fn squares<'a>(
                     .set("y", (y as f32) * side)
                     .set("width", side)
                     .set("height", side)
-                    .set("fill", fill.color[ix])
-                    .set("fill-opacity", fill.opacity[ix])
+                    .set("fill", fill.0[ix])
+                    .set("fill-opacity", fill.1[ix])
                     .set("stroke", stroke.0)
                     .set("stroke-opacity", stroke.1),
             );
@@ -1392,11 +1312,11 @@ pub fn squares<'a>(
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/tesselation.svg)
 ///
 /// ```
-/// use geopattern::{Fill, tesselation};
+/// use geopattern::tesselation;
 ///
 /// let c = tesselation(
 ///     60.0,
-///     Fill::new(
+///     (
 ///         &(0..20).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..20).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -1408,11 +1328,12 @@ pub fn squares<'a>(
 /// ```
 pub fn tesselation<'a>(
     length: f32,
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), 20);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.0.len(), 20);
 
     let hex_width = length * 2.0;
     let hex_height = length * (3.0 as f32).sqrt();
@@ -1423,23 +1344,13 @@ pub fn tesselation<'a>(
     let tile_width = length * 3.0 + tess_height * 2.0;
     let tile_height = hex_height * 2.0 + length * 2.0;
 
-    let mut doc = Document::new()
-        .set("width", tile_width)
-        .set("height", tile_height)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document((tile_width, tile_height), background_color);
 
     let polyline = |ix| {
         Polyline::new()
             .set("points", points.as_str())
-            .set("fill", fill.color[ix])
-            .set("fill-opacity", fill.opacity[ix])
+            .set("fill", fill.0[ix])
+            .set("fill-opacity", fill.1[ix])
             .set("stroke", stroke.0)
             .set("stroke-opacity", stroke.1)
             .set("stroke-width", 1)
@@ -1447,8 +1358,8 @@ pub fn tesselation<'a>(
 
     let rect = |ix| {
         Rectangle::new()
-            .set("fill", fill.color[ix])
-            .set("fill-opacity", fill.opacity[ix])
+            .set("fill", fill.0[ix])
+            .set("fill-opacity", fill.1[ix])
             .set("stroke", stroke.0)
             .set("stroke-opacity", stroke.1)
             .set("stroke-width", 1)
@@ -1771,17 +1682,79 @@ pub fn tesselation<'a>(
     doc
 }
 
+/// tiled lines
+///
+/// https://generativeartistry.com/tutorials/tiled-lines/
+///
+/// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/tiled_lines.svg)
+///
+/// ```
+/// use geopattern::tiled_lines;
+///
+/// let c = tiled_lines(
+///     80,
+///     (2, 2),
+///     &(0..4).map(|i| i & 1 == 0).collect::<Vec<bool>>(),
+///     (
+///         &(0..4).map(|_| "#ddd").collect::<Vec<&str>>(),
+///         &(0..4).map(|_| 0.5).collect::<Vec<f32>>(),
+///     ),
+///     "#FFFFFF",
+/// );
+///
+/// println!("{}", c);
+/// ```
+pub fn tiled_lines<'a>(
+    step_size: usize,
+    (width, height): (usize, usize),
+    ltr: &'a [bool],
+    stroke: (&'a [&'a str], &'a [f32]),
+    background_color: &'a str,
+) -> Document {
+    debug_assert_eq!(ltr.len(), width * height);
+    debug_assert_eq!(ltr.len(), stroke.0.len());
+    debug_assert_eq!(stroke.0.len(), stroke.1.len());
+
+    let mut doc = create_document((step_size * width, step_size * height), background_color);
+
+    for x in 0..width {
+        for y in 0..height {
+            let ix = x * height + y;
+
+            let (x, y) = (x * step_size, y * step_size);
+
+            let path = if ltr[ix] {
+                format!("M {} {} L {} {}", x, y, x + step_size, y + step_size)
+            } else {
+                format!("M {} {} L {} {}", x + step_size, y, x, y + step_size)
+            };
+
+            doc = doc.add(
+                Path::new()
+                    .set("d", path)
+                    .set("fill", "none")
+                    .set("stroke", stroke.0[ix])
+                    .set("stroke-opacity", stroke.1[ix])
+                    .set("stroke-width", "5")
+                    .set("stroke-linecap", "square"),
+            );
+        }
+    }
+
+    doc
+}
+
 /// triangles
 ///
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/triangles.svg)
 ///
 /// ```
-/// use geopattern::{Fill, triangles};
+/// use geopattern::triangles;
 ///
 /// let c = triangles(
 ///     60.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -1794,11 +1767,12 @@ pub fn tesselation<'a>(
 pub fn triangles<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), width * height);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.0.len(), width * height);
 
     let triangle_height = (3.0 as f32).sqrt() * side / 2.0;
     let points = format!(
@@ -1810,17 +1784,10 @@ pub fn triangles<'a>(
         side / 2.0
     );
 
-    let mut doc = Document::new()
-        .set("width", side / 2.0 * width as f32)
-        .set("height", triangle_height * height as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (side / 2.0 * width as f32, triangle_height * height as f32),
+        background_color,
+    );
 
     for y in 0..height {
         for x in 0..width {
@@ -1834,8 +1801,8 @@ pub fn triangles<'a>(
 
             let p = Polyline::new()
                 .set("points", points.as_str())
-                .set("fill", fill.color[ix])
-                .set("fill-opacity", fill.opacity[ix])
+                .set("fill", fill.0[ix])
+                .set("fill-opacity", fill.1[ix])
                 .set("stroke", stroke.0)
                 .set("stroke-opacity", stroke.1);
 
@@ -1870,17 +1837,17 @@ pub fn triangles<'a>(
     doc
 }
 
-/// squares
+/// xes
 ///
-/// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/squares.svg)
+/// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/xes.svg)
 ///
 /// ```
-/// use geopattern::{Fill, xes};
+/// use geopattern::xes;
 ///
 /// let c = xes(
 ///     60.0,
 ///     (2, 2),
-///     Fill::new(
+///     (
 ///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
 ///     ),
@@ -1892,24 +1859,18 @@ pub fn triangles<'a>(
 pub fn xes<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: Fill<'a>,
+    fill: (&'a [&'a str], &'a [f32]),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.opacity.len(), width * height);
+    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.0.len(), width * height);
 
     let x_side = side * 3.0 * 0.943;
 
-    let mut doc = Document::new()
-        .set("width", x_side / 2.0 * width as f32)
-        .set("height", x_side / 2.0 * height as f32)
-        .add(
-            Rectangle::new()
-                .set("x", 0)
-                .set("y", 0)
-                .set("width", "100%")
-                .set("height", "100%")
-                .set("fill", background_color),
-        );
+    let mut doc = create_document(
+        (x_side / 2.0 * width as f32, x_side / 2.0 * height as f32),
+        background_color,
+    );
 
     let rects = plus(side);
 
@@ -1923,8 +1884,8 @@ pub fn xes<'a>(
             };
 
             let group = Group::new()
-                .set("fill", fill.color[ix])
-                .set("style", format!("opacity:{};", fill.opacity[ix]))
+                .set("fill", fill.0[ix])
+                .set("style", format!("opacity:{};", fill.1[ix]))
                 .add(rects.0.clone())
                 .add(rects.1.clone());
 

@@ -4,7 +4,7 @@ use svg::Document;
 use geopattern::{
     chevrons, concentric_circles, diamonds, hexagons, mosaic_squares, nested_squares, octagons,
     overlapping_circles, overlapping_rings, plaid, plus_signs, sine_waves, squares, tesselation,
-    triangles, xes, Fill,
+    tiled_lines, triangles, xes,
 };
 
 fn chevrons_bench(c: &mut Criterion) {
@@ -13,7 +13,7 @@ fn chevrons_bench(c: &mut Criterion) {
             let _document: Document = chevrons(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -35,7 +35,7 @@ fn concentric_circles_bench(c: &mut Criterion) {
                 black_box(60.0),
                 black_box(20.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -43,7 +43,7 @@ fn concentric_circles_bench(c: &mut Criterion) {
                         .map(|i| 0.02 + (i as f32 * 0.2) / 255.0)
                         .collect::<Vec<f32>>(),
                 ),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -63,7 +63,7 @@ fn diamonds_bench(c: &mut Criterion) {
             let _document: Document = diamonds(
                 black_box((60.0, 60.0)),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -84,7 +84,7 @@ fn hexagons_bench(c: &mut Criterion) {
             let _document: Document = hexagons(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -105,7 +105,7 @@ fn mosaic_squares_bench(c: &mut Criterion) {
             let _document: Document = mosaic_squares(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -113,7 +113,7 @@ fn mosaic_squares_bench(c: &mut Criterion) {
                         .map(|i| 0.02 + (i as f32 * 0.2) / 255.0)
                         .collect::<Vec<f32>>(),
                 ),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -134,7 +134,7 @@ fn nested_squares_bench(c: &mut Criterion) {
             let _document: Document = nested_squares(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -142,7 +142,7 @@ fn nested_squares_bench(c: &mut Criterion) {
                         .map(|i| 0.02 + (i as f32 * 0.2) / 255.0)
                         .collect::<Vec<f32>>(),
                 ),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -162,7 +162,7 @@ fn octagons_bench(c: &mut Criterion) {
             let _document: Document = octagons(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -183,7 +183,7 @@ fn overlapping_circles_bench(c: &mut Criterion) {
             let _document: Document = overlapping_circles(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -203,7 +203,7 @@ fn overlapping_rings_bench(c: &mut Criterion) {
             let _document: Document = overlapping_rings(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -227,7 +227,7 @@ fn plaid_bench(c: &mut Criterion) {
                 &(1..20)
                     .map(|v| 5.0 + (v as f32 * 8.0) / 255.0)
                     .collect::<Vec<f32>>(),
-                Fill::new(
+                (
                     &(0..19)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -247,7 +247,7 @@ fn plus_signs_bench(c: &mut Criterion) {
             let _document: Document = plus_signs(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -269,7 +269,7 @@ fn sine_waves_bench(c: &mut Criterion) {
                 black_box(60.0),
                 black_box(20.0),
                 black_box(20.0),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -289,7 +289,7 @@ fn squares_bench(c: &mut Criterion) {
             let _document: Document = squares(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -309,7 +309,7 @@ fn tesselation_bench(c: &mut Criterion) {
         b.iter(|| {
             let _document: Document = tesselation(
                 black_box(60.0),
-                Fill::new(
+                (
                     &(0..20)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -324,13 +324,34 @@ fn tesselation_bench(c: &mut Criterion) {
     });
 }
 
+fn tiled_lines_bench(c: &mut Criterion) {
+    c.bench_function("tiled_lines", |b| {
+        b.iter(|| {
+            let _document: Document = tiled_lines(
+                black_box(60),
+                (5, 4),
+                &(0..20).map(|i| i & 1 == 0).collect::<Vec<bool>>(),
+                (
+                    &(0..20)
+                        .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
+                        .collect::<Vec<&str>>(),
+                    &(0..20)
+                        .map(|i| 0.02 + (i as f32 * 0.2) / 255.0)
+                        .collect::<Vec<f32>>(),
+                ),
+                black_box("#998877"),
+            );
+        })
+    });
+}
+
 fn triangles_bench(c: &mut Criterion) {
     c.bench_function("triangles", |b| {
         b.iter(|| {
             let _document: Document = triangles(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -351,7 +372,7 @@ fn xes_bench(c: &mut Criterion) {
             let _document: Document = xes(
                 black_box(60.0),
                 black_box((4, 4)),
-                Fill::new(
+                (
                     &(0..16)
                         .map(|i| if i & 1 == 0 { "#ddd" } else { "#222" })
                         .collect::<Vec<&str>>(),
@@ -381,6 +402,7 @@ criterion_group!(
     sine_waves_bench,
     squares_bench,
     tesselation_bench,
+    tiled_lines_bench,
     triangles_bench,
     xes_bench,
 );

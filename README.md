@@ -64,6 +64,10 @@ In the cleanup, removed error handling and now the code has a bunch of `assert_e
 
 <img src="examples/readme/tesselation.svg">
 
+### Tiled Lines
+
+<img src="examples/readme/tiled_lines.svg">
+
 ### Triangles
 
 <img src="examples/readme/triangles.svg">

@@ -4,7 +4,7 @@ use svg::save;
 use geopattern::{
     chevrons, concentric_circles, diamonds, hexagons, mosaic_squares, nested_squares, octagons,
     overlapping_circles, overlapping_rings, plaid, plus_signs, sine_waves, squares, tesselation,
-    triangles, xes, Fill,
+    tiled_lines, triangles, xes,
 };
 
 fn main() -> anyhow::Result<()> {
@@ -24,6 +24,7 @@ fn main() -> anyhow::Result<()> {
     write_sine_waves(&digest)?;
     write_squares(&digest)?;
     write_tesselation(&digest)?;
+    write_tiled_lines(&digest)?;
     write_triangles(&digest)?;
     write_xes(&digest)?;
 
@@ -36,7 +37,7 @@ fn write_chevrons(digest: &[u8]) -> anyhow::Result<()> {
         &chevrons(
             60.0,
             (4, 4),
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -59,7 +60,7 @@ fn write_concentric_circles(digest: &[u8]) -> anyhow::Result<()> {
             30.0,
             8.0,
             (4, 4),
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -67,7 +68,7 @@ fn write_concentric_circles(digest: &[u8]) -> anyhow::Result<()> {
                     .map(|i| 0.02 + (digest[i] as f32 * 0.2) / 255.0)
                     .collect::<Vec<f32>>(),
             ),
-            Fill::new(
+            (
                 &(4..20)
                     .rev()
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
@@ -90,7 +91,7 @@ fn write_diamonds(digest: &[u8]) -> anyhow::Result<()> {
         &diamonds(
             (60.0, 60.0),
             (4, 4),
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -112,7 +113,7 @@ fn write_hexagons(digest: &[u8]) -> anyhow::Result<()> {
         &hexagons(
             24.0,
             (4, 4),
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -134,7 +135,7 @@ fn write_mosaic_squares(digest: &[u8]) -> anyhow::Result<()> {
         &mosaic_squares(
             30.0,
             (4, 4),
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -142,7 +143,7 @@ fn write_mosaic_squares(digest: &[u8]) -> anyhow::Result<()> {
                     .map(|i| 0.02 + (digest[i] as f32 * 0.4) / 255.0)
                     .collect::<Vec<f32>>(),
             ),
-            Fill::new(
+            (
                 &(4..20)
                     .rev()
                     .map(|i| if digest[i] & 1 == 0 { "#222" } else { "#ddd" })
@@ -166,7 +167,7 @@ fn write_nested_squares(digest: &[u8]) -> anyhow::Result<()> {
         &nested_squares(
             4.0,
             (4, 4),
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -174,7 +175,7 @@ fn write_nested_squares(digest: &[u8]) -> anyhow::Result<()> {
                     .map(|i| 0.02 + (digest[i] as f32 * 0.4) / 255.0)
                     .collect::<Vec<f32>>(),
             ),
-            Fill::new(
+            (
                 &(4..20)
                     .rev()
                     .map(|i| if digest[i] & 1 == 0 { "#222" } else { "#ddd" })
@@ -197,7 +198,7 @@ fn write_octagons(digest: &[u8]) -> anyhow::Result<()> {
         &octagons(
             24.0,
             (4, 4),
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -219,7 +220,7 @@ fn write_overlapping_circles(digest: &[u8]) -> anyhow::Result<()> {
         &overlapping_circles(
             40.0,
             (4, 4),
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -240,7 +241,7 @@ fn write_overlapping_rings(digest: &[u8]) -> anyhow::Result<()> {
         &overlapping_rings(
             40.0,
             (4, 4),
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -265,7 +266,7 @@ fn write_plaid(digest: &[u8]) -> anyhow::Result<()> {
             &(1..20)
                 .map(|v| 5.0 + (digest[v] as f32 * 8.0) / 255.0)
                 .collect::<Vec<f32>>(),
-            Fill::new(
+            (
                 &(0..19)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -286,7 +287,7 @@ fn write_plus_signs(digest: &[u8]) -> anyhow::Result<()> {
         &plus_signs(
             24.0,
             (4, 4),
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -309,7 +310,7 @@ fn write_sine_waves(digest: &[u8]) -> anyhow::Result<()> {
             300.0,
             80.0,
             10.0,
-            Fill::new(
+            (
                 &(0..16)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -330,7 +331,7 @@ fn write_squares(digest: &[u8]) -> anyhow::Result<()> {
         &squares(
             48.0,
             (4, 4),
-            Fill::new(
+            (
                 &(2..18)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -351,7 +352,7 @@ fn write_tesselation(digest: &[u8]) -> anyhow::Result<()> {
         "examples/readme/tesselation.svg",
         &tesselation(
             48.0,
-            Fill::new(
+            (
                 &(0..20)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -367,13 +368,44 @@ fn write_tesselation(digest: &[u8]) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn write_tiled_lines(digest: &[u8]) -> anyhow::Result<()> {
+    let colors = (0..64)
+        .map(|i| {
+            format!(
+                "rgb({},{},{})",
+                digest[i % 20],
+                digest[(i + 1) % 20],
+                digest[(i + 2) % 20]
+            )
+        })
+        .collect::<Vec<String>>();
+
+    save(
+        "examples/readme/tiled_lines.svg",
+        &tiled_lines(
+            48,
+            (8, 8),
+            &(0..64)
+                .map(|v| digest[v % 20] & 1 == 0)
+                .collect::<Vec<bool>>(),
+            (
+                &colors.iter().map(|s| s as &str).collect::<Vec<&str>>(),
+                &(0..64).map(|_| 0.75).collect::<Vec<f32>>(),
+            ),
+            "#222",
+        ),
+    )?;
+
+    Ok(())
+}
+
 fn write_triangles(digest: &[u8]) -> anyhow::Result<()> {
     save(
         "examples/readme/triangles.svg",
         &triangles(
             72.0,
             (4, 4),
-            Fill::new(
+            (
                 &(2..18)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
@@ -395,7 +427,7 @@ fn write_xes(digest: &[u8]) -> anyhow::Result<()> {
         &xes(
             48.0,
             (4, 4),
-            Fill::new(
+            (
                 &(2..18)
                     .map(|i| if digest[i] & 1 == 0 { "#ddd" } else { "#222" })
                     .collect::<Vec<&str>>(),
