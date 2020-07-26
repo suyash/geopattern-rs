@@ -8,6 +8,14 @@ The sha1 stuff is out, now essentially a bunch of functions that return `svg::Do
 
 In the cleanup, removed error handling and now the code has a bunch of `assert_eq!` calls. Maybe reconsider that.
 
+## Examples
+
+Generated using
+
+```
+cargo run --example create_readme_examples
+```
+
 ### Chevrons
 
 <img src="examples/readme/chevrons.svg">
@@ -23,6 +31,10 @@ In the cleanup, removed error handling and now the code has a bunch of `assert_e
 ### Hexagons
 
 <img src="examples/readme/hexagons.svg">
+
+### Joy Division
+
+<img src="examples/readme/joy_division.svg">
 
 ### Mosaic Squares
 

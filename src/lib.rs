@@ -6,7 +6,7 @@ use svg::node::element::{Circle, Group, Path, Polyline, Rectangle};
 use svg::node::Value;
 use svg::Document;
 
-fn create_document<'a, V>((width, height): (V, V), background_color: &'a str) -> Document
+fn create_document<V>((width, height): (V, V), background_color: &str) -> Document
 where
     V: Into<Value>,
 {
@@ -445,6 +445,67 @@ pub fn hexagons<'a>(
                 ));
             }
         }
+    }
+
+    doc
+}
+
+/// Joy Division
+///
+/// https://generativeartistry.com/tutorials/joy-division/
+///
+/// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/joy_division.svg)
+///
+/// ```
+/// use geopattern::joy_division;
+///
+/// let c = joy_division(
+///     60.0,
+///     (2, 2),
+///     &(0..4).map(|v| v as f32).collect::<Vec<f32>>(),
+///     ("#333", 0.5, 2.0),
+///     2,
+///     "#987987",
+/// );
+///
+/// println!("{}", c);
+/// ```
+pub fn joy_division<'a>(
+    step_size: f32,
+    (width, height): (usize, usize),
+    pulse_heights: &'a [f32],
+    (stroke_color, stroke_opacity, stroke_width): (&'a str, f32, f32),
+    padding_top: usize,
+    background_color: &'a str,
+) -> Document {
+    debug_assert_eq!(pulse_heights.len(), width * height);
+
+    let mut doc = create_document(
+        (
+            width as f32 * step_size,
+            (height + 1 + padding_top) as f32 * step_size,
+        ),
+        background_color,
+    );
+
+    for y in 0..height {
+        let top = (y + 1 + padding_top) as f32 * step_size + stroke_width / 2.0;
+        let mut path = format!("M {} {}", 0, top);
+
+        for x in 0..width {
+            let ix = y * width + x;
+            let left = (x + 1) as f32 * step_size;
+            path = format!("{} L {} {}", path, left, top + pulse_heights[ix]);
+        }
+
+        doc = doc.add(
+            Path::new()
+                .set("d", path)
+                .set("fill", background_color)
+                .set("stroke", stroke_color)
+                .set("stroke-opacity", stroke_opacity)
+                .set("stroke-width", stroke_width),
+        );
     }
 
     doc
@@ -1699,6 +1760,7 @@ pub fn tesselation<'a>(
 ///         &(0..4).map(|_| "#ddd").collect::<Vec<&str>>(),
 ///         &(0..4).map(|_| 0.5).collect::<Vec<f32>>(),
 ///     ),
+///     5.0,
 ///     "#FFFFFF",
 /// );
 ///
@@ -1709,6 +1771,7 @@ pub fn tiled_lines<'a>(
     (width, height): (usize, usize),
     ltr: &'a [bool],
     stroke: (&'a [&'a str], &'a [f32]),
+    stroke_width: f32,
     background_color: &'a str,
 ) -> Document {
     debug_assert_eq!(ltr.len(), width * height);
@@ -1735,7 +1798,7 @@ pub fn tiled_lines<'a>(
                     .set("fill", "none")
                     .set("stroke", stroke.0[ix])
                     .set("stroke-opacity", stroke.1[ix])
-                    .set("stroke-width", "5")
+                    .set("stroke-width", stroke_width)
                     .set("stroke-linecap", "square"),
             );
         }

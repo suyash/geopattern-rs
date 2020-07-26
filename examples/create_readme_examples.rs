@@ -2,9 +2,9 @@ use sha1::{Digest, Sha1};
 use svg::save;
 
 use geopattern::{
-    chevrons, concentric_circles, diamonds, hexagons, mosaic_squares, nested_squares, octagons,
-    overlapping_circles, overlapping_rings, plaid, plus_signs, sine_waves, squares, tesselation,
-    tiled_lines, triangles, xes,
+    chevrons, concentric_circles, diamonds, hexagons, joy_division, mosaic_squares, nested_squares,
+    octagons, overlapping_circles, overlapping_rings, plaid, plus_signs, sine_waves, squares,
+    tesselation, tiled_lines, triangles, xes,
 };
 
 fn main() -> anyhow::Result<()> {
@@ -14,6 +14,7 @@ fn main() -> anyhow::Result<()> {
     write_concentric_circles(&digest)?;
     write_diamonds(&digest)?;
     write_hexagons(&digest)?;
+    write_joy_division(&digest)?;
     write_mosaic_squares(&digest)?;
     write_nested_squares(&digest)?;
     write_octagons(&digest)?;
@@ -123,6 +124,38 @@ fn write_hexagons(digest: &[u8]) -> anyhow::Result<()> {
             ),
             ("#000", 0.02),
             &format!("rgb({},{},{})", digest[6], digest[7], digest[8]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_joy_division(digest: &[u8]) -> anyhow::Result<()> {
+    let (width, height, step_size) = (26, 13, 16.0);
+    let mut pulse_heights = vec![0.0; width * height];
+    for y in 0..height {
+        for x in 0..width {
+            let ix = y * width + x;
+            let variance = if (x + 1) > width / 2 {
+                width - (x + 1)
+            } else {
+                x + 1
+            };
+            let variance = if variance < width / 4 { 0 } else { variance };
+            pulse_heights[ix] =
+                (digest[ix % 20] as f32 / 255.0) * (variance as f32 * step_size / 5.0) * -1.0;
+        }
+    }
+
+    save(
+        "examples/readme/joy_division.svg",
+        &joy_division(
+            step_size,
+            (width, height),
+            &pulse_heights,
+            ("#FFF", 0.75, 2.5),
+            2,
+            &format!("rgb({},{},{})", digest[4], digest[5], digest[6]),
         ),
     )?;
 
@@ -392,6 +425,7 @@ fn write_tiled_lines(digest: &[u8]) -> anyhow::Result<()> {
                 &colors.iter().map(|s| s as &str).collect::<Vec<&str>>(),
                 &(0..64).map(|_| 0.75).collect::<Vec<f32>>(),
             ),
+            5.0,
             "#222",
         ),
     )?;
