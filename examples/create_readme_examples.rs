@@ -143,7 +143,7 @@ fn write_joy_division(digest: &[u8]) -> anyhow::Result<()> {
             };
             let variance = if variance < width / 4 { 0 } else { variance };
             pulse_heights[ix] =
-                (digest[ix % 20] as f32 / 255.0) * (variance as f32 * step_size / 5.0) * -1.0;
+                (digest[ix % 20] as f32 / 255.0) * (variance as f32 * step_size / 4.0) * -1.0;
         }
     }
 

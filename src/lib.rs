@@ -492,11 +492,35 @@ pub fn joy_division<'a>(
         let top = (y + 1 + padding_top) as f32 * step_size + stroke_width / 2.0;
         let mut path = format!("M {} {}", 0, top);
 
+        let (mut pleft, mut ptop) = (0.0, top);
+
         for x in 0..width {
             let ix = y * width + x;
+
+            let top = top + pulse_heights[ix];
             let left = (x + 1) as f32 * step_size;
-            path = format!("{} L {} {}", path, left, top + pulse_heights[ix]);
+
+            path = format!(
+                "{} Q {} {} {} {}",
+                path,
+                pleft,
+                ptop,
+                (left + pleft) / 2.0,
+                (top + ptop) / 2.0,
+            );
+
+            ptop = top;
+            pleft = left;
         }
+
+        path = format!(
+            "{} Q {} {} {} {}",
+            path,
+            pleft,
+            ptop,
+            width as f32 * step_size,
+            top
+        );
 
         doc = doc.add(
             Path::new()

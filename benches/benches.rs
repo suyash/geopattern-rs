@@ -2,9 +2,9 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use svg::Document;
 
 use geopattern::{
-    chevrons, concentric_circles, diamonds, hexagons, mosaic_squares, nested_squares, octagons,
-    overlapping_circles, overlapping_rings, plaid, plus_signs, sine_waves, squares, tesselation,
-    tiled_lines, triangles, xes,
+    chevrons, concentric_circles, diamonds, hexagons, joy_division, mosaic_squares, nested_squares,
+    octagons, overlapping_circles, overlapping_rings, plaid, plus_signs, sine_waves, squares,
+    tesselation, tiled_lines, triangles, xes,
 };
 
 fn chevrons_bench(c: &mut Criterion) {
@@ -93,6 +93,23 @@ fn hexagons_bench(c: &mut Criterion) {
                         .collect::<Vec<f32>>(),
                 ),
                 black_box(("#ddd", 0.2)),
+                black_box("#998877"),
+            );
+        })
+    });
+}
+
+fn joy_division_bench(c: &mut Criterion) {
+    c.bench_function("joy_division", |b| {
+        b.iter(|| {
+            let _document: Document = joy_division(
+                black_box(60.0),
+                black_box((4, 4)),
+                &(0..16)
+                    .map(|i| 0.02 + (i as f32 * 0.2) / 255.0)
+                    .collect::<Vec<f32>>(),
+                black_box(("#ddd", 0.2, 2.75)),
+                black_box(0),
                 black_box("#998877"),
             );
         })
@@ -339,6 +356,7 @@ fn tiled_lines_bench(c: &mut Criterion) {
                         .map(|i| 0.02 + (i as f32 * 0.2) / 255.0)
                         .collect::<Vec<f32>>(),
                 ),
+                black_box(2.0),
                 black_box("#998877"),
             );
         })
@@ -392,6 +410,7 @@ criterion_group!(
     concentric_circles_bench,
     diamonds_bench,
     hexagons_bench,
+    joy_division_bench,
     mosaic_squares_bench,
     nested_squares_bench,
     octagons_bench,
