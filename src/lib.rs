@@ -212,6 +212,82 @@ pub fn concentric_circles<'a>(
     doc
 }
 
+/// Cubic Disarray
+///
+/// https://generativeartistry.com/tutorials/cubic-disarray/
+///
+/// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/cubic_disarray.svg)
+///
+/// ```
+/// use geopattern::cubic_disarray;
+///
+/// let c = cubic_disarray(
+///     60.0,
+///     (2, 2),
+///     (
+///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
+///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
+///     ),
+///     ("#ddd", 0.2),
+///     (
+///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
+///         &(0..4).map(|v| 0.02 + (v as f32 * std::f32::consts::PI) / 4.0).collect::<Vec<f32>>(),
+///     ),
+///     "#987987",
+/// );
+///
+/// println!("{}", c);
+/// ```
+pub fn cubic_disarray<'a>(
+    side: f32,
+    (width, height): (usize, usize),
+    fill: (&'a [&'a str], &'a [f32]),
+    stroke: (&'a str, f32),
+    (translate, rotate): (&'a [f32], &'a [f32]),
+    background_color: &'a str,
+) -> Document {
+    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(translate.len(), width * height);
+    debug_assert_eq!(rotate.len(), width * height);
+
+    let mut doc = create_document(
+        (side * width as f32, side * height as f32),
+        background_color,
+    );
+
+    for y in 0..height {
+        for x in 0..width {
+            let ix = y * width + x;
+
+            doc = doc.add(
+                Rectangle::new()
+                    .set("x", (x as f32) * side)
+                    .set("y", (y as f32) * side)
+                    .set("width", side)
+                    .set("height", side)
+                    .set("fill", fill.0[ix])
+                    .set("fill-opacity", fill.1[ix])
+                    .set("stroke", stroke.0)
+                    .set("stroke-opacity", stroke.1)
+                    .set(
+                        "transform",
+                        format!(
+                            "translate({} {}) rotate({} {} {})",
+                            translate[ix],
+                            0,
+                            rotate[ix],
+                            (x as f32) * side,
+                            (y as f32) * side
+                        ),
+                    ),
+            );
+        }
+    }
+
+    doc
+}
+
 /// diamonds
 ///
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/diamonds.svg)

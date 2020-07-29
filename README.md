@@ -24,6 +24,10 @@ cargo run --example create_readme_examples
 
 <img src="examples/readme/concentric_circles.svg">
 
+### Cubic Disarray
+
+<img src="examples/readme/cubic_disarray.svg">
+
 ### Diamonds
 
 <img src="examples/readme/diamonds.svg">

@@ -2,9 +2,9 @@ use sha1::{Digest, Sha1};
 use svg::save;
 
 use geopattern::{
-    chevrons, concentric_circles, diamonds, hexagons, joy_division, mosaic_squares, nested_squares,
-    octagons, overlapping_circles, overlapping_rings, plaid, plus_signs, sine_waves, squares,
-    tesselation, tiled_lines, triangles, xes,
+    chevrons, concentric_circles, cubic_disarray, diamonds, hexagons, joy_division, mosaic_squares,
+    nested_squares, octagons, overlapping_circles, overlapping_rings, plaid, plus_signs,
+    sine_waves, squares, tesselation, tiled_lines, triangles, xes,
 };
 
 fn main() -> anyhow::Result<()> {
@@ -12,6 +12,7 @@ fn main() -> anyhow::Result<()> {
 
     write_chevrons(&digest)?;
     write_concentric_circles(&digest)?;
+    write_cubic_disarray(&digest)?;
     write_diamonds(&digest)?;
     write_hexagons(&digest)?;
     write_joy_division(&digest)?;
@@ -80,6 +81,45 @@ fn write_concentric_circles(digest: &[u8]) -> anyhow::Result<()> {
                     .collect::<Vec<f32>>(),
             ),
             &format!("rgb({},{},{})", digest[4], digest[5], digest[6]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_cubic_disarray(digest: &[u8]) -> anyhow::Result<()> {
+    save(
+        "examples/readme/cubic_disarray.svg",
+        &cubic_disarray(
+            48.0,
+            (8, 8),
+            (
+                &(0..64).map(|_| "#FFF").collect::<Vec<&str>>(),
+                &(0..64).map(|_| 1.0).collect::<Vec<f32>>(),
+            ),
+            ("#333", 1.0),
+            (
+                &(0..64)
+                    .map(|i| {
+                        ((i / 8) as f32
+                            * digest[i % 20] as f32
+                            * 1.5
+                            * (((digest[i % 20] & 1) * 2) as f32 - 1.0))
+                            / 255.0
+                    })
+                    .collect::<Vec<f32>>(),
+                &(0..64)
+                    .map(|i| {
+                        ((i / 8) as f32
+                            * digest[i % 20] as f32
+                            * std::f32::consts::PI
+                            * 1.5
+                            * (((digest[i % 20] & 1) * 2) as f32 - 1.0))
+                            / 255.0
+                    })
+                    .collect::<Vec<f32>>(),
+            ),
+            &format!("rgb({},{},{})", 200, 200, 200),
         ),
     )?;
 
