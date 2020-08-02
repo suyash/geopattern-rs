@@ -1400,14 +1400,14 @@ pub fn sine_waves<'a>(
     period: f32,
     a: f32,
     ww: f32,
-    fill: &'a [(&'a str, f32)],
+    stroke: &'a [(&'a str, f32)],
     background_color: &'a str,
 ) -> Document {
-    let n = fill.len();
+    let n = stroke.len();
 
     let mut doc = create_document((period, ww * n as f32), background_color);
 
-    for i in 0..n {
+    for (i, s) in stroke.iter().enumerate() {
         let xoff = (period / 4.0) * 0.7;
 
         let path = Path::new()
@@ -1430,11 +1430,8 @@ pub fn sine_waves<'a>(
                 ),
             )
             .set("fill", "none")
-            .set("stroke", fill[i].0)
-            .set(
-                "style",
-                format!("opacity:{};stroke-width:{};", fill[i].1, ww),
-            );
+            .set("stroke", s.0)
+            .set("style", format!("opacity:{};stroke-width:{};", s.1, ww));
 
         doc = doc.add(path.clone().set(
             "transform",
@@ -2174,15 +2171,18 @@ pub fn triangular_mesh<'a>(
 /// let c = un_deus_trois(
 ///     60.0,
 ///     (2, 2),
-///     &(0..4)
+///     &(0..12)
 ///         .map(|v| {
 ///             (
 ///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 2.0,
 ///                 0.02 + (v as f32) / 4.0,
 ///             )
 ///         })
-///         .collect::<Vec<(&str, f32)>>(),
-///     ("#ddd", 0.2),
+///         .collect::<Vec<(&str, f32, f32)>>(),
+///     &(0..12)
+///         .map(|v| 30.0 * v as f32)
+///         .collect::<Vec<f32>>(),
 ///     "#987987",
 /// );
 ///
