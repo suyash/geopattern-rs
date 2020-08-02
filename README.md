@@ -88,6 +88,14 @@ cargo run --example create_readme_examples
 
 <img src="examples/readme/triangles.svg">
 
+### Triangular Mesh
+
+<img src="examples/readme/triangular_mesh.svg">
+
+### Un Deus Trois
+
+<img src="examples/readme/un_deus_trois.svg">
+
 ### Xes
 
 <img src="examples/readme/xes.svg">

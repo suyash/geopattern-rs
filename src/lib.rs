@@ -33,10 +33,14 @@ where
 /// let c = chevrons(
 ///     60.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     ("#000", 0.2),
 ///     "#987987",
 /// );
@@ -46,12 +50,11 @@ where
 pub fn chevrons<'a>(
     chevron_width: f32,
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), width * height);
-    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.len(), width * height);
 
     let (stroke_color, stroke_opacity) = stroke;
 
@@ -95,8 +98,8 @@ pub fn chevrons<'a>(
             let ix = y * width + x;
 
             let g = Group::new()
-                .set("fill", fill.0[ix])
-                .set("fill-opacity", fill.1[ix])
+                .set("fill", fill[ix].0)
+                .set("fill-opacity", fill[ix].1)
                 .set("stroke", stroke_color)
                 .set("stroke-opacity", stroke_opacity)
                 .set("stroke-width", 1)
@@ -139,14 +142,22 @@ pub fn chevrons<'a>(
 ///     20.0,
 ///     4.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
-///     (
-///         &(0..4).rev().map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).rev().map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     "#987987",
 /// );
 ///
@@ -156,14 +167,12 @@ pub fn concentric_circles<'a>(
     diameter: f32,
     concentric_width: f32,
     (width, height): (usize, usize),
-    fill_outer: (&'a [&'a str], &'a [f32]),
-    fill_inner: (&'a [&'a str], &'a [f32]),
+    fill_outer: &'a [(&'a str, f32)],
+    fill_inner: &'a [(&'a str, f32)],
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill_outer.0.len(), width * height);
-    debug_assert_eq!(fill_inner.0.len(), width * height);
-    debug_assert_eq!(fill_outer.0.len(), fill_outer.1.len());
-    debug_assert_eq!(fill_inner.0.len(), fill_inner.1.len());
+    debug_assert_eq!(fill_outer.len(), width * height);
+    debug_assert_eq!(fill_inner.len(), width * height);
 
     let diameter = diameter + concentric_width;
 
@@ -187,12 +196,12 @@ pub fn concentric_circles<'a>(
                     .set("cx", cx)
                     .set("cy", cy)
                     .set("r", diameter / 2.0)
-                    .set("stroke", fill_outer.0[ix])
+                    .set("stroke", fill_outer[ix].0)
                     .set(
                         "style",
                         format!(
                             "opacity:{}; stroke-width:0x{:X};",
-                            fill_outer.1[ix],
+                            fill_outer[ix].1,
                             (concentric_width as i64)
                         ),
                     ),
@@ -203,8 +212,8 @@ pub fn concentric_circles<'a>(
                     .set("cx", cx)
                     .set("cy", cy)
                     .set("r", diameter / 4.0)
-                    .set("fill", fill_inner.0[ix])
-                    .set("fill-opacity", fill_inner.1[ix]),
+                    .set("fill", fill_inner[ix].0)
+                    .set("fill-opacity", fill_inner[ix].1),
             );
         }
     }
@@ -224,10 +233,14 @@ pub fn concentric_circles<'a>(
 /// let c = cubic_disarray(
 ///     60.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     ("#ddd", 0.2),
 ///     (
 ///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
@@ -241,13 +254,12 @@ pub fn concentric_circles<'a>(
 pub fn cubic_disarray<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     stroke: (&'a str, f32),
     (translate, rotate): (&'a [f32], &'a [f32]),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), fill.1.len());
-    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.len(), width * height);
     debug_assert_eq!(translate.len(), width * height);
     debug_assert_eq!(rotate.len(), width * height);
 
@@ -266,8 +278,8 @@ pub fn cubic_disarray<'a>(
                     .set("y", (y as f32) * side)
                     .set("width", side)
                     .set("height", side)
-                    .set("fill", fill.0[ix])
-                    .set("fill-opacity", fill.1[ix])
+                    .set("fill", fill[ix].0)
+                    .set("fill-opacity", fill[ix].1)
                     .set("stroke", stroke.0)
                     .set("stroke-opacity", stroke.1)
                     .set(
@@ -298,10 +310,14 @@ pub fn cubic_disarray<'a>(
 /// let c = diamonds(
 ///     (20.0, 20.0),
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     ("#ddd", 0.2),
 ///     "#987987",
 /// );
@@ -311,12 +327,11 @@ pub fn cubic_disarray<'a>(
 pub fn diamonds<'a>(
     (diamond_width, diamond_height): (f32, f32),
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), width * height);
-    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.len(), width * height);
 
     let points = format!(
         "{},0,{},{},{},{},0,{}",
@@ -344,8 +359,8 @@ pub fn diamonds<'a>(
 
             let polyline = Polyline::new()
                 .set("points", points.as_str())
-                .set("fill", fill.0[ix])
-                .set("fill-opacity", fill.1[ix])
+                .set("fill", fill[ix].0)
+                .set("fill-opacity", fill[ix].1)
                 .set("stroke", stroke_color)
                 .set("stroke-opacity", stroke_opacity);
 
@@ -411,10 +426,14 @@ pub fn diamonds<'a>(
 /// let c = hexagons(
 ///     20.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     ("#ddd", 0.2),
 ///     "#987987",
 /// );
@@ -424,12 +443,11 @@ pub fn diamonds<'a>(
 pub fn hexagons<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), width * height);
-    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.len(), width * height);
 
     let hexagon_width = side * 2.0;
     let hexagon_height = side * (3.0 as f32).sqrt();
@@ -464,8 +482,8 @@ pub fn hexagons<'a>(
 
             let polyline = Polyline::new()
                 .set("points", points.as_str())
-                .set("fill", fill.0[ix])
-                .set("fill-opacity", fill.1[ix])
+                .set("fill", fill[ix].0)
+                .set("fill-opacity", fill[ix].1)
                 .set("stroke", stroke.0)
                 .set("stroke-opacity", stroke.1);
 
@@ -621,14 +639,22 @@ pub fn joy_division<'a>(
 /// let c = mosaic_squares(
 ///     20.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
-///     (
-///         &(0..4).rev().map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).rev().map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     ("#ddd", 0.2),
 ///     "#987987",
 /// );
@@ -638,15 +664,13 @@ pub fn joy_division<'a>(
 pub fn mosaic_squares<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill_outer: (&'a [&'a str], &'a [f32]),
-    fill_inner: (&'a [&'a str], &'a [f32]),
+    fill_outer: &'a [(&'a str, f32)],
+    fill_inner: &'a [(&'a str, f32)],
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill_outer.0.len(), width * height);
-    debug_assert_eq!(fill_inner.0.len(), width * height);
-    debug_assert_eq!(fill_outer.0.len(), fill_outer.1.len());
-    debug_assert_eq!(fill_inner.0.len(), fill_inner.1.len());
+    debug_assert_eq!(fill_outer.len(), width * height);
+    debug_assert_eq!(fill_inner.len(), width * height);
 
     let mut doc = create_document(
         (side * width as f32 * 2.0, side * height as f32 * 2.0),
@@ -658,8 +682,8 @@ pub fn mosaic_squares<'a>(
 
         let polyline = Polyline::new()
             .set("points", points)
-            .set("fill", fill_outer.0[ix])
-            .set("fill-opacity", fill_outer.1[ix])
+            .set("fill", fill_outer[ix].0)
+            .set("fill-opacity", fill_outer[ix].1)
             .set("stroke", stroke.0)
             .set("stroke-opacity", stroke.1);
 
@@ -691,8 +715,8 @@ pub fn mosaic_squares<'a>(
 
         let polyline = Polyline::new()
             .set("points", points.as_str())
-            .set("fill", fill_outer.0[ix])
-            .set("fill-opacity", fill_outer.1[ix])
+            .set("fill", fill_outer[ix].0)
+            .set("fill-opacity", fill_outer[ix].1)
             .set("stroke", stroke.0)
             .set("stroke-opacity", stroke.1);
 
@@ -708,8 +732,8 @@ pub fn mosaic_squares<'a>(
 
         let polyline = Polyline::new()
             .set("points", points)
-            .set("fill", fill_inner.0[ix])
-            .set("fill-opacity", fill_inner.1[ix])
+            .set("fill", fill_inner[ix].0)
+            .set("fill-opacity", fill_inner[ix].1)
             .set("stroke", stroke.0)
             .set("stroke-opacity", stroke.1);
 
@@ -786,14 +810,22 @@ pub fn mosaic_squares<'a>(
 /// let c = nested_squares(
 ///     60.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
-///     (
-///         &(0..4).rev().map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).rev().map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     "#987987",
 /// );
 ///
@@ -802,14 +834,12 @@ pub fn mosaic_squares<'a>(
 pub fn nested_squares<'a>(
     inner_side: f32,
     (width, height): (usize, usize),
-    stroke_outer: (&'a [&'a str], &'a [f32]),
-    fill_inner: (&'a [&'a str], &'a [f32]),
+    stroke_outer: &'a [(&'a str, f32)],
+    fill_inner: &'a [(&'a str, f32)],
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill_inner.0.len(), width * height);
-    debug_assert_eq!(stroke_outer.0.len(), width * height);
-    debug_assert_eq!(fill_inner.0.len(), fill_inner.1.len());
-    debug_assert_eq!(stroke_outer.0.len(), stroke_outer.1.len());
+    debug_assert_eq!(fill_inner.len(), width * height);
+    debug_assert_eq!(stroke_outer.len(), width * height);
 
     let outer_side = inner_side * 7.0;
 
@@ -839,12 +869,12 @@ pub fn nested_squares<'a>(
                     .set("width", outer_side)
                     .set("height", outer_side)
                     .set("fill", "none")
-                    .set("stroke", stroke_outer.0[ix])
+                    .set("stroke", stroke_outer[ix].0)
                     .set(
                         "style",
                         format!(
                             "opacity:{};stroke-width:{};",
-                            stroke_outer.1[ix], inner_side
+                            stroke_outer[ix].1, inner_side
                         ),
                     ),
             );
@@ -869,10 +899,10 @@ pub fn nested_squares<'a>(
                     .set("width", inner_side * 3.0)
                     .set("height", inner_side * 3.0)
                     .set("fill", "none")
-                    .set("stroke", fill_inner.0[ix])
+                    .set("stroke", fill_inner[ix].0)
                     .set(
                         "style",
-                        format!("opacity:{};stroke-width:{};", fill_inner.1[ix], inner_side),
+                        format!("opacity:{};stroke-width:{};", fill_inner[ix].1, inner_side),
                     ),
             );
         }
@@ -891,10 +921,14 @@ pub fn nested_squares<'a>(
 /// let c = octagons(
 ///     60.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     ("#ddd", 0.2),
 ///     "#987987",
 /// );
@@ -904,12 +938,11 @@ pub fn nested_squares<'a>(
 pub fn octagons<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), width * height);
-    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.len(), width * height);
 
     let mut doc = create_document(
         (side * width as f32, side * height as f32),
@@ -941,8 +974,8 @@ pub fn octagons<'a>(
             doc = doc.add(
                 Polyline::new()
                     .set("points", points.as_str())
-                    .set("fill", fill.0[ix])
-                    .set("fill-opacity", fill.1[ix])
+                    .set("fill", fill[ix].0)
+                    .set("fill-opacity", fill[ix].1)
                     .set("stroke", stroke.0)
                     .set("stroke-opacity", stroke.1)
                     .set(
@@ -966,10 +999,14 @@ pub fn octagons<'a>(
 /// let c = overlapping_circles(
 ///     60.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     "#987987",
 /// );
 ///
@@ -978,11 +1015,10 @@ pub fn octagons<'a>(
 pub fn overlapping_circles<'a>(
     radius: f32,
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), width * height);
-    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.len(), width * height);
 
     let mut doc = create_document(
         (radius * width as f32, radius * height as f32),
@@ -998,8 +1034,8 @@ pub fn overlapping_circles<'a>(
                     .set("cx", x as f32 * radius)
                     .set("cy", y as f32 * radius)
                     .set("r", radius)
-                    .set("fill", fill.0[ix])
-                    .set("style", format!("opacity:{};", fill.1[ix])),
+                    .set("fill", fill[ix].0)
+                    .set("style", format!("opacity:{};", fill[ix].1)),
             );
 
             if x == 0 {
@@ -1008,8 +1044,8 @@ pub fn overlapping_circles<'a>(
                         .set("cx", width as f32 * radius)
                         .set("cy", y as f32 * radius)
                         .set("r", radius)
-                        .set("fill", fill.0[ix])
-                        .set("style", format!("opacity:{};", fill.1[ix])),
+                        .set("fill", fill[ix].0)
+                        .set("style", format!("opacity:{};", fill[ix].1)),
                 )
             }
 
@@ -1019,8 +1055,8 @@ pub fn overlapping_circles<'a>(
                         .set("cx", x as f32 * radius)
                         .set("cy", height as f32 * radius)
                         .set("r", radius)
-                        .set("fill", fill.0[ix])
-                        .set("style", format!("opacity:{};", fill.1[ix])),
+                        .set("fill", fill[ix].0)
+                        .set("style", format!("opacity:{};", fill[ix].1)),
                 )
             }
 
@@ -1030,8 +1066,8 @@ pub fn overlapping_circles<'a>(
                         .set("cx", width as f32 * radius)
                         .set("cy", height as f32 * radius)
                         .set("r", radius)
-                        .set("fill", fill.0[ix])
-                        .set("style", format!("opacity:{};", fill.1[ix])),
+                        .set("fill", fill[ix].0)
+                        .set("style", format!("opacity:{};", fill[ix].1)),
                 )
             }
         }
@@ -1052,10 +1088,14 @@ pub fn overlapping_circles<'a>(
 /// let c = overlapping_rings(
 ///     60.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     "#987987",
 /// );
 ///
@@ -1064,11 +1104,10 @@ pub fn overlapping_circles<'a>(
 pub fn overlapping_rings<'a>(
     radius: f32,
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), width * height);
-    debug_assert_eq!(fill.0.len(), fill.1.len());
+    debug_assert_eq!(fill.len(), width * height);
 
     let mut doc = create_document(
         (radius * width as f32, radius * height as f32),
@@ -1085,10 +1124,10 @@ pub fn overlapping_rings<'a>(
                     .set("cy", y as f32 * radius)
                     .set("r", radius - radius / 8.0)
                     .set("fill", "none")
-                    .set("stroke", fill.0[ix])
+                    .set("stroke", fill[ix].0)
                     .set(
                         "style",
-                        format!("opacity:{};stroke-width:{};", fill.1[ix], radius / 4.0),
+                        format!("opacity:{};stroke-width:{};", fill[ix].1, radius / 4.0),
                     ),
             );
 
@@ -1099,10 +1138,10 @@ pub fn overlapping_rings<'a>(
                         .set("cy", (y as f32) * radius)
                         .set("r", radius - radius / 8.0)
                         .set("fill", "none")
-                        .set("stroke", fill.0[ix])
+                        .set("stroke", fill[ix].0)
                         .set(
                             "style",
-                            format!("opacity:{};stroke-width:{};", fill.1[ix], radius / 4.0),
+                            format!("opacity:{};stroke-width:{};", fill[ix].1, radius / 4.0),
                         ),
                 )
             }
@@ -1114,10 +1153,10 @@ pub fn overlapping_rings<'a>(
                         .set("cy", height as f32 * radius)
                         .set("r", radius - radius / 8.0)
                         .set("fill", "none")
-                        .set("stroke", fill.0[ix])
+                        .set("stroke", fill[ix].0)
                         .set(
                             "style",
-                            format!("opacity:{};stroke-width:{};", fill.1[ix], radius / 4.0),
+                            format!("opacity:{};stroke-width:{};", fill[ix].1, radius / 4.0),
                         ),
                 )
             }
@@ -1129,10 +1168,10 @@ pub fn overlapping_rings<'a>(
                         .set("cy", height as f32 * radius)
                         .set("r", radius - radius / 8.0)
                         .set("fill", "none")
-                        .set("stroke", fill.0[ix])
+                        .set("stroke", fill[ix].0)
                         .set(
                             "style",
-                            format!("opacity:{};stroke-width:{};", fill.1[ix], radius / 4.0),
+                            format!("opacity:{};stroke-width:{};", fill[ix].1, radius / 4.0),
                         ),
                 )
             }
@@ -1152,10 +1191,14 @@ pub fn overlapping_rings<'a>(
 /// let c = plaid(
 ///     &(0..4).map(|v| 5.0 + v as f32 * 4.0).collect::<Vec<f32>>(),
 ///     &(0..4).map(|v| 3.0 + v as f32 * 7.0).collect::<Vec<f32>>(),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     "#987987",
 /// );
 ///
@@ -1164,15 +1207,13 @@ pub fn overlapping_rings<'a>(
 pub fn plaid<'a>(
     distances: &'a [f32],
     sizes: &'a [f32],
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), fill.1.len());
-
     let n = distances.len();
 
     debug_assert_eq!(sizes.len(), n);
-    debug_assert_eq!(fill.0.len(), n);
+    debug_assert_eq!(fill.len(), n);
 
     let (mut w, mut h) = (0.0, 0.0);
 
@@ -1187,8 +1228,8 @@ pub fn plaid<'a>(
                 .set("y", h)
                 .set("width", "100%")
                 .set("height", sizes[i])
-                .set("opacity", fill.1[i])
-                .set("fill", fill.0[i]),
+                .set("opacity", fill[i].1)
+                .set("fill", fill[i].0),
         );
 
         h += sizes[i];
@@ -1203,8 +1244,8 @@ pub fn plaid<'a>(
                 .set("y", 0)
                 .set("width", sizes[i])
                 .set("height", "100%")
-                .set("opacity", fill.1[i])
-                .set("fill", fill.0[i]),
+                .set("opacity", fill[i].1)
+                .set("fill", fill[i].0),
         );
 
         w += sizes[i];
@@ -1238,10 +1279,14 @@ fn plus(side: f32) -> (Rectangle, Rectangle) {
 /// let c = plus_signs(
 ///     60.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     ("#ddd", 0.2),
 ///     "#987987",
 /// );
@@ -1251,12 +1296,11 @@ fn plus(side: f32) -> (Rectangle, Rectangle) {
 pub fn plus_signs<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), fill.1.len());
-    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.len(), width * height);
 
     let mut doc = create_document(
         (side * 2.0 * width as f32, side * 2.0 * height as f32),
@@ -1274,10 +1318,10 @@ pub fn plus_signs<'a>(
             let dx = (y % 2) as f32;
 
             let g = Group::new()
-                .set("fill", fill.0[ix])
+                .set("fill", fill[ix].0)
                 .set("stroke", stroke.0)
                 .set("stroke-opacity", stroke.1)
-                .set("style", format!("fill-opacity:{};", fill.1[ix]))
+                .set("style", format!("fill-opacity:{};", fill[ix].1))
                 .add(rects.0.clone())
                 .add(rects.1.clone());
 
@@ -1339,10 +1383,14 @@ pub fn plus_signs<'a>(
 ///     120.0,
 ///     80.0,
 ///     20.0,
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     "#987987",
 /// );
 ///
@@ -1352,12 +1400,10 @@ pub fn sine_waves<'a>(
     period: f32,
     a: f32,
     ww: f32,
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), fill.1.len());
-
-    let n = fill.0.len();
+    let n = fill.len();
 
     let mut doc = create_document((period, ww * n as f32), background_color);
 
@@ -1384,10 +1430,10 @@ pub fn sine_waves<'a>(
                 ),
             )
             .set("fill", "none")
-            .set("stroke", fill.0[i])
+            .set("stroke", fill[i].0)
             .set(
                 "style",
-                format!("opacity:{};stroke-width:{};", fill.1[i], ww),
+                format!("opacity:{};stroke-width:{};", fill[i].1, ww),
             );
 
         doc = doc.add(path.clone().set(
@@ -1422,10 +1468,14 @@ pub fn sine_waves<'a>(
 /// let c = squares(
 ///     60.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     ("#ddd", 0.2),
 ///     "#987987",
 /// );
@@ -1435,12 +1485,11 @@ pub fn sine_waves<'a>(
 pub fn squares<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), fill.1.len());
-    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.len(), width * height);
 
     let mut doc = create_document(
         (side * width as f32, side * height as f32),
@@ -1457,8 +1506,8 @@ pub fn squares<'a>(
                     .set("y", (y as f32) * side)
                     .set("width", side)
                     .set("height", side)
-                    .set("fill", fill.0[ix])
-                    .set("fill-opacity", fill.1[ix])
+                    .set("fill", fill[ix].0)
+                    .set("fill-opacity", fill[ix].1)
                     .set("stroke", stroke.0)
                     .set("stroke-opacity", stroke.1),
             );
@@ -1477,10 +1526,14 @@ pub fn squares<'a>(
 ///
 /// let c = tesselation(
 ///     60.0,
-///     (
-///         &(0..20).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..20).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..20)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     ("#ddd", 0.2),
 ///     "#987987",
 /// );
@@ -1489,12 +1542,11 @@ pub fn squares<'a>(
 /// ```
 pub fn tesselation<'a>(
     length: f32,
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), fill.1.len());
-    debug_assert_eq!(fill.0.len(), 20);
+    debug_assert_eq!(fill.len(), 20);
 
     let hex_width = length * 2.0;
     let hex_height = length * (3.0 as f32).sqrt();
@@ -1507,20 +1559,20 @@ pub fn tesselation<'a>(
 
     let mut doc = create_document((tile_width, tile_height), background_color);
 
-    let polyline = |ix| {
+    let polyline = |ix: usize| {
         Polyline::new()
             .set("points", points.as_str())
-            .set("fill", fill.0[ix])
-            .set("fill-opacity", fill.1[ix])
+            .set("fill", fill[ix].0)
+            .set("fill-opacity", fill[ix].1)
             .set("stroke", stroke.0)
             .set("stroke-opacity", stroke.1)
             .set("stroke-width", 1)
     };
 
-    let rect = |ix| {
+    let rect = |ix: usize| {
         Rectangle::new()
-            .set("fill", fill.0[ix])
-            .set("fill-opacity", fill.1[ix])
+            .set("fill", fill[ix].0)
+            .set("fill-opacity", fill[ix].1)
             .set("stroke", stroke.0)
             .set("stroke-opacity", stroke.1)
             .set("stroke-width", 1)
@@ -1856,10 +1908,14 @@ pub fn tesselation<'a>(
 ///     80,
 ///     (2, 2),
 ///     &(0..4).map(|i| i & 1 == 0).collect::<Vec<bool>>(),
-///     (
-///         &(0..4).map(|_| "#ddd").collect::<Vec<&str>>(),
-///         &(0..4).map(|_| 0.5).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     5.0,
 ///     "#FFFFFF",
 /// );
@@ -1870,13 +1926,12 @@ pub fn tiled_lines<'a>(
     step_size: usize,
     (width, height): (usize, usize),
     ltr: &'a [bool],
-    stroke: (&'a [&'a str], &'a [f32]),
+    stroke: &'a [(&'a str, f32)],
     stroke_width: f32,
     background_color: &'a str,
 ) -> Document {
     debug_assert_eq!(ltr.len(), width * height);
-    debug_assert_eq!(ltr.len(), stroke.0.len());
-    debug_assert_eq!(stroke.0.len(), stroke.1.len());
+    debug_assert_eq!(ltr.len(), stroke.len());
 
     let mut doc = create_document((step_size * width, step_size * height), background_color);
 
@@ -1896,8 +1951,8 @@ pub fn tiled_lines<'a>(
                 Path::new()
                     .set("d", path)
                     .set("fill", "none")
-                    .set("stroke", stroke.0[ix])
-                    .set("stroke-opacity", stroke.1[ix])
+                    .set("stroke", stroke[ix].0)
+                    .set("stroke-opacity", stroke[ix].1)
                     .set("stroke-width", stroke_width)
                     .set("stroke-linecap", "square"),
             );
@@ -1917,10 +1972,14 @@ pub fn tiled_lines<'a>(
 /// let c = triangles(
 ///     60.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     ("#ddd", 0.2),
 ///     "#987987",
 /// );
@@ -1930,12 +1989,11 @@ pub fn tiled_lines<'a>(
 pub fn triangles<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     stroke: (&'a str, f32),
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), fill.1.len());
-    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.len(), width * height);
 
     let triangle_height = (3.0 as f32).sqrt() * side / 2.0;
     let points = format!(
@@ -1964,8 +2022,8 @@ pub fn triangles<'a>(
 
             let p = Polyline::new()
                 .set("points", points.as_str())
-                .set("fill", fill.0[ix])
-                .set("fill-opacity", fill.1[ix])
+                .set("fill", fill[ix].0)
+                .set("fill-opacity", fill[ix].1)
                 .set("stroke", stroke.0)
                 .set("stroke-opacity", stroke.1);
 
@@ -2000,6 +2058,265 @@ pub fn triangles<'a>(
     doc
 }
 
+/// Triangular Mesh
+///
+/// https://generativeartistry.com/tutorials/triangular-mesh/
+///
+/// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/triangular_mesh.svg)
+///
+/// `fill` has required size `(4 * width - 2) * height`
+///
+/// `entropy` has required size `width * (height + 1)`
+///
+/// ```
+/// use geopattern::triangular_mesh;
+///
+/// let c = triangular_mesh(
+///     60.0,
+///     (2, 2),
+///     &(0..6).map(|v| (0.02 + (v as f32) / 4.0, 0.02 + (v as f32) / 4.0)).collect::<Vec<(f32, f32)>>(),
+///     &(0..12).map(|v| ("#ddd", 0.2)).collect::<Vec<(&str, f32)>>(),
+///     (1.0, "#ddd", 0.2),
+///     "#987987",
+/// );
+///
+/// println!("{}", c);
+/// ```
+pub fn triangular_mesh<'a>(
+    side: f32,
+    (width, height): (usize, usize),
+    entropy: &'a [(f32, f32)],
+    fill: &'a [(&'a str, f32)],
+    stroke: (f32, &'a str, f32),
+    background_color: &'a str,
+) -> Document {
+    debug_assert_eq!(fill.len(), (4 * width - 2) * height);
+    debug_assert_eq!(entropy.len(), width * (height + 1));
+
+    let mut doc = create_document(
+        (side * width as f32, side * (height + 1) as f32),
+        background_color,
+    );
+
+    let mut lines = Vec::new();
+
+    for y in 0..height {
+        let mut line = Vec::new();
+
+        for x in 0..2 * width {
+            let xx = x / 2;
+
+            let e1 = entropy[y * width + xx];
+            let e2 = entropy[(y + 1) * width + xx];
+
+            if y & 1 == 0 {
+                line.push((
+                    side / 4.0 + xx as f32 * side + e2.0,
+                    side / 2.0 + (y + 1) as f32 * side + e2.1,
+                ));
+
+                line.push((
+                    side / 4.0 + side / 2.0 + xx as f32 * side + e1.0,
+                    side / 2.0 + y as f32 * side + e1.1,
+                ));
+            } else {
+                line.push((
+                    side / 4.0 + xx as f32 * side + e1.0,
+                    side / 2.0 + y as f32 * side + e1.1,
+                ));
+
+                line.push((
+                    side / 4.0 + side / 2.0 + xx as f32 * side + e2.0,
+                    side / 2.0 + (y + 1) as f32 * side + e2.1,
+                ));
+            }
+        }
+
+        lines.push(line);
+    }
+
+    for (j, line) in lines.iter().enumerate() {
+        for i in 0..line.len() - 2 {
+            doc = doc.add(
+                Path::new()
+                    .set(
+                        "d",
+                        format!(
+                            "M {} {} L {} {} L {} {} Z",
+                            line[i].0,
+                            line[i].1,
+                            line[i + 1].0,
+                            line[i + 1].1,
+                            line[i + 2].0,
+                            line[i + 2].1
+                        ),
+                    )
+                    .set("fill", fill[j * (line.len() - 2) + i].0)
+                    .set("fill-opacity", fill[j * (line.len() - 2) + i].1)
+                    .set("stroke", stroke.1)
+                    .set("stroke-width", stroke.0)
+                    .set("stroke-opacity", stroke.2)
+                    .set("stroke-linejoin", "bevel"),
+            );
+        }
+    }
+
+    doc
+}
+
+/// Un Deus Trois
+///
+/// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/un_deus_trois.svg)
+///
+/// ```
+/// use geopattern::un_deus_trois;
+///
+/// let c = un_deus_trois(
+///     60.0,
+///     (2, 2),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
+///     ("#ddd", 0.2),
+///     "#987987",
+/// );
+///
+/// println!("{}", c);
+/// ```
+pub fn un_deus_trois<'a>(
+    step_size: f32,
+    (width, height): (usize, usize),
+    stroke: &'a [(&'a str, f32, f32)],
+    rotation: &'a [f32],
+    background_color: &'a str,
+) -> Document {
+    debug_assert_eq!(rotation.len(), 3 * width * height);
+    debug_assert_eq!(stroke.len(), 3 * width * height);
+
+    let mut doc = create_document(
+        (step_size * width as f32, step_size * height as f32 * 3.0),
+        background_color,
+    );
+
+    // Un
+    for y in 0..height {
+        for x in 0..width {
+            let (stroke, stroke_width, stroke_opacity) = stroke[y * width + x];
+
+            doc = doc.add(
+                Path::new()
+                    .set(
+                        "d",
+                        format!(
+                            "M {} {} L {} {}",
+                            (x as f32 + 0.5) * step_size,
+                            y as f32 * step_size,
+                            (x as f32 + 0.5) * step_size,
+                            (y + 1) as f32 * step_size
+                        ),
+                    )
+                    .set("stroke", stroke)
+                    .set("stroke-width", stroke_width)
+                    .set("stroke-opacity", stroke_opacity)
+                    .set(
+                        "transform",
+                        format!(
+                            "rotate({} {} {})",
+                            rotation[y * width + x],
+                            (x as f32 + 0.5) * step_size,
+                            (y as f32 + 0.5) * step_size
+                        ),
+                    ),
+            );
+        }
+    }
+
+    // Deux
+    for y in 0..height {
+        for x in 0..width {
+            let (stroke, stroke_width, stroke_opacity) = stroke[(height + y) * width + x];
+
+            doc = doc.add(
+                Path::new()
+                    .set(
+                        "d",
+                        format!(
+                            "M {} {} L {} {} M {} {} L {} {}",
+                            (x as f32 + 0.2) * step_size,
+                            (height + y) as f32 * step_size,
+                            (x as f32 + 0.2) * step_size,
+                            (height + y + 1) as f32 * step_size,
+                            (x as f32 + 0.8) * step_size,
+                            (height + y) as f32 * step_size,
+                            (x as f32 + 0.8) * step_size,
+                            (height + y + 1) as f32 * step_size
+                        ),
+                    )
+                    .set("stroke", stroke)
+                    .set("stroke-width", stroke_width)
+                    .set("stroke-opacity", stroke_opacity)
+                    .set(
+                        "transform",
+                        format!(
+                            "rotate({} {} {})",
+                            rotation[(height + y) * width + x],
+                            (x as f32 + 0.5) * step_size,
+                            ((height + y) as f32 + 0.5) * step_size
+                        ),
+                    ),
+            );
+        }
+    }
+
+    // Trois
+    for y in 0..height {
+        for x in 0..width {
+            let (stroke, stroke_width, stroke_opacity) = stroke[(2 * height + y) * width + x];
+
+            doc = doc.add(
+                Path::new()
+                    .set(
+                        "d",
+                        format!(
+                            "M {} {} L {} {} M {} {} L {} {} M {} {} L {} {}",
+                            (x as f32 + 0.1) * step_size,
+                            (2 * height + y) as f32 * step_size,
+                            (x as f32 + 0.1) * step_size,
+                            (2 * height + y + 1) as f32 * step_size,
+                            (x as f32 + 0.5) * step_size,
+                            (2 * height + y) as f32 * step_size,
+                            (x as f32 + 0.5) * step_size,
+                            (2 * height + y + 1) as f32 * step_size,
+                            (x as f32 + 0.9) * step_size,
+                            (2 * height + y) as f32 * step_size,
+                            (x as f32 + 0.9) * step_size,
+                            (2 * height + y + 1) as f32 * step_size
+                        ),
+                    )
+                    .set("stroke", stroke)
+                    .set("stroke-width", stroke_width)
+                    .set("stroke-opacity", stroke_opacity)
+                    .set(
+                        "transform",
+                        format!(
+                            "rotate({} {} {})",
+                            rotation[(2 * height + y) * width + x],
+                            (x as f32 + 0.5) * step_size,
+                            ((2 * height + y) as f32 + 0.5) * step_size
+                        ),
+                    ),
+            );
+        }
+    }
+
+    doc
+}
+
 /// xes
 ///
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/xes.svg)
@@ -2010,10 +2327,14 @@ pub fn triangles<'a>(
 /// let c = xes(
 ///     60.0,
 ///     (2, 2),
-///     (
-///         &(0..4).map(|v| if v & 1 == 0 { "#222" } else { "#ddd" }).collect::<Vec<&str>>(),
-///         &(0..4).map(|v| 0.02 + (v as f32) / 4.0).collect::<Vec<f32>>(),
-///     ),
+///     &(0..4)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
 ///     "#987987",
 /// );
 ///
@@ -2022,11 +2343,10 @@ pub fn triangles<'a>(
 pub fn xes<'a>(
     side: f32,
     (width, height): (usize, usize),
-    fill: (&'a [&'a str], &'a [f32]),
+    fill: &'a [(&'a str, f32)],
     background_color: &'a str,
 ) -> Document {
-    debug_assert_eq!(fill.0.len(), fill.1.len());
-    debug_assert_eq!(fill.0.len(), width * height);
+    debug_assert_eq!(fill.len(), width * height);
 
     let x_side = side * 3.0 * 0.943;
 
@@ -2047,8 +2367,8 @@ pub fn xes<'a>(
             };
 
             let group = Group::new()
-                .set("fill", fill.0[ix])
-                .set("style", format!("opacity:{};", fill.1[ix]))
+                .set("fill", fill[ix].0)
+                .set("style", format!("opacity:{};", fill[ix].1))
                 .add(rects.0.clone())
                 .add(rects.1.clone());
 
