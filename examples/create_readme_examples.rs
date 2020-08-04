@@ -408,12 +408,12 @@ fn write_piet_mondrian(_digest: &[u8]) -> anyhow::Result<()> {
     save(
         "examples/readme/piet_mondrian.svg",
         &piet_mondrian(
-            &vec![
+            &[
                 (PietMondrianSplitType::X, 80.0),
                 (PietMondrianSplitType::Y, 220.0),
             ],
             (300.0, 300.0),
-            &vec![("#FFF", 1.0), ("#00F", 1.0), ("#F00", 1.0), ("#FFF", 1.0)],
+            &[("#FFF", 1.0), ("#00F", 1.0), ("#F00", 1.0), ("#FFF", 1.0)],
             ("#222", 8.0, 1.0),
             "#FFF",
         ),
