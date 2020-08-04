@@ -1385,6 +1385,99 @@ pub fn overlapping_rings<'a>(
     doc
 }
 
+/// enum to identify the axis along which the splits need to be made
+pub enum PietMondrianSplitType {
+    /// X direction
+    X,
+    /// Y direction
+    Y,
+}
+
+/// Piet Mondrian
+///
+/// https://generativeartistry.com/tutorials/piet-mondrian/
+///
+/// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/piet_mondrian.svg)
+///
+/// ```
+/// use geopattern::{piet_mondrian, PietMondrianSplitType};
+///
+/// let c = piet_mondrian(
+///     &vec![
+///         (PietMondrianSplitType::X, 80.0),
+///         (PietMondrianSplitType::Y, 220.0),
+///     ],
+///     (300.0, 300.0),
+///     &vec![("#FFF", 1.0), ("#00F", 1.0), ("#F00", 1.0), ("#FFF", 1.0)],
+///     ("#222", 8.0, 1.0),
+///     "#FFF",
+/// );
+///
+/// println!("{}", c);
+/// ```
+pub fn piet_mondrian<'a>(
+    splits: &[(PietMondrianSplitType, f32)],
+    (width, height): (f32, f32),
+    fill: &'a [(&'a str, f32)],
+    stroke: (&'a str, f32, f32),
+    background_color: &'a str,
+) -> Document {
+    let mut doc = create_document((width as f32, height as f32), background_color);
+
+    let mut squares = vec![(0.0, 0.0, width, height)];
+    let mut new_squares;
+
+    for split in splits {
+        new_squares = vec![];
+
+        for s in squares {
+            let (t, d) = split;
+            match t {
+                PietMondrianSplitType::X => {
+                    let (x, y, w, h) = s;
+                    if x < *d && x + w > *d {
+                        new_squares.push((x, y, w - (x + w - d), h));
+                        new_squares.push((*d, y, x + w - d, h));
+                    } else {
+                        new_squares.push(s);
+                    }
+                }
+                PietMondrianSplitType::Y => {
+                    let (x, y, w, h) = s;
+                    if y < *d && y + h > *d {
+                        new_squares.push((x, y, w, h - (y + h - d)));
+                        new_squares.push((x, *d, w, y + h - d));
+                    } else {
+                        new_squares.push(s);
+                    }
+                }
+            }
+        }
+
+        squares = new_squares;
+    }
+
+    debug_assert_eq!(squares.len(), fill.len());
+
+    for (i, square) in squares.into_iter().enumerate() {
+        let (x, y, w, h) = square;
+        doc = doc.add(
+            Rectangle::new()
+                .set("x", x)
+                .set("y", y)
+                .set("width", w)
+                .set("height", h)
+                .set("fill", fill[i].0)
+                .set("fill-opacity", fill[i].1)
+                .set("stroke", stroke.0)
+                .set("stroke-width", stroke.1)
+                .set("stroke-opacity", stroke.2),
+        );
+    }
+
+    doc
+}
+
 /// plaid
 ///
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/plaid.svg)

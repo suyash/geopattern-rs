@@ -68,6 +68,10 @@ cargo run --example create_readme_examples
 
 <img src="examples/readme/overlapping_rings.svg">
 
+### Piet Mondrian
+
+<img src="examples/readme/piet_mondrian.svg">
+
 ### Plaid
 
 <img src="examples/readme/plaid.svg">

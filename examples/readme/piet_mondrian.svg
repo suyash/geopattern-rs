@@ -1,0 +1,7 @@
+<svg height="300" width="300" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#FFF" height="100%" width="100%" x="0" y="0"/>
+<rect fill="#FFF" fill-opacity="1" height="220" stroke="#222" stroke-opacity="1" stroke-width="8" width="80" x="0" y="0"/>
+<rect fill="#00F" fill-opacity="1" height="80" stroke="#222" stroke-opacity="1" stroke-width="8" width="80" x="0" y="220"/>
+<rect fill="#F00" fill-opacity="1" height="220" stroke="#222" stroke-opacity="1" stroke-width="8" width="220" x="80" y="0"/>
+<rect fill="#FFF" fill-opacity="1" height="80" stroke="#222" stroke-opacity="1" stroke-width="8" width="220" x="80" y="220"/>
+</svg>

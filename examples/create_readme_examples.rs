@@ -5,8 +5,8 @@ use svg::save;
 use geopattern::{
     chevrons, circle_packing, concentric_circles, cubic_disarray, diamonds, hexagons,
     hypnotic_squares, joy_division, mosaic_squares, nested_squares, octagons, overlapping_circles,
-    overlapping_rings, plaid, plus_signs, sine_waves, squares, tesselation, tiled_lines, triangles,
-    triangular_mesh, un_deus_trois, xes,
+    overlapping_rings, piet_mondrian, plaid, plus_signs, sine_waves, squares, tesselation,
+    tiled_lines, triangles, triangular_mesh, un_deus_trois, xes, PietMondrianSplitType,
 };
 
 fn main() -> anyhow::Result<()> {
@@ -25,6 +25,7 @@ fn main() -> anyhow::Result<()> {
     write_octagons(&digest)?;
     write_overlapping_circles(&digest)?;
     write_overlapping_rings(&digest)?;
+    write_piet_mondrian(&digest)?;
     write_plaid(&digest)?;
     write_plus_signs(&digest)?;
     write_sine_waves(&digest)?;
@@ -397,6 +398,24 @@ fn write_overlapping_rings(digest: &[u8]) -> anyhow::Result<()> {
                 })
                 .collect::<Vec<(&str, f32)>>(),
             &format!("rgb({},{},{})", digest[15], digest[16], digest[17]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_piet_mondrian(_digest: &[u8]) -> anyhow::Result<()> {
+    save(
+        "examples/readme/piet_mondrian.svg",
+        &piet_mondrian(
+            &vec![
+                (PietMondrianSplitType::X, 80.0),
+                (PietMondrianSplitType::Y, 220.0),
+            ],
+            (300.0, 300.0),
+            &vec![("#FFF", 1.0), ("#00F", 1.0), ("#F00", 1.0), ("#FFF", 1.0)],
+            ("#222", 8.0, 1.0),
+            "#FFF",
         ),
     )?;
 
