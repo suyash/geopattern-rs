@@ -1,102 +1,102 @@
 <svg height="192" width="192" xmlns="http://www.w3.org/2000/svg">
 <rect fill="rgb(56,79,141)" height="100%" width="100%" x="0" y="0"/>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.14705883;" transform="translate(-24, -36)">
+<g fill="#222" fill-opacity="0.14705883" stroke="#ddd" stroke-opacity="0.02" transform="translate(-24, -36)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.14705883;" transform="translate(264, -36)">
+<g fill="#222" fill-opacity="0.14705883" stroke="#ddd" stroke-opacity="0.02" transform="translate(264, -36)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.14705883;" transform="translate(-24, 252)">
+<g fill="#222" fill-opacity="0.14705883" stroke="#ddd" stroke-opacity="0.02" transform="translate(-24, 252)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.14705883;" transform="translate(264, 252)">
+<g fill="#222" fill-opacity="0.14705883" stroke="#ddd" stroke-opacity="0.02" transform="translate(264, 252)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.15333334;" transform="translate(24, -36)">
+<g fill="#222" fill-opacity="0.15333334" stroke="#ddd" stroke-opacity="0.02" transform="translate(24, -36)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.15333334;" transform="translate(24, 252)">
+<g fill="#222" fill-opacity="0.15333334" stroke="#ddd" stroke-opacity="0.02" transform="translate(24, 252)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.068627454;" transform="translate(72, -36)">
+<g fill="#222" fill-opacity="0.068627454" stroke="#ddd" stroke-opacity="0.02" transform="translate(72, -36)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.068627454;" transform="translate(72, 252)">
+<g fill="#222" fill-opacity="0.068627454" stroke="#ddd" stroke-opacity="0.02" transform="translate(72, 252)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.4168628;" transform="translate(120, -36)">
+<g fill="#222" fill-opacity="0.4168628" stroke="#ddd" stroke-opacity="0.02" transform="translate(120, -36)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.4168628;" transform="translate(120, 252)">
+<g fill="#222" fill-opacity="0.4168628" stroke="#ddd" stroke-opacity="0.02" transform="translate(120, 252)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.046666667;" transform="translate(0, 12)">
+<g fill="#222" fill-opacity="0.046666667" stroke="#ddd" stroke-opacity="0.02" transform="translate(0, 12)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.046666667;" transform="translate(288, 12)">
+<g fill="#222" fill-opacity="0.046666667" stroke="#ddd" stroke-opacity="0.02" transform="translate(288, 12)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#ddd" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.2647059;" transform="translate(48, 12)">
+<g fill="#ddd" fill-opacity="0.2647059" stroke="#ddd" stroke-opacity="0.02" transform="translate(48, 12)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.34784314;" transform="translate(96, 12)">
+<g fill="#222" fill-opacity="0.34784314" stroke="#ddd" stroke-opacity="0.02" transform="translate(96, 12)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#ddd" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.34313726;" transform="translate(144, 12)">
+<g fill="#ddd" fill-opacity="0.34313726" stroke="#ddd" stroke-opacity="0.02" transform="translate(144, 12)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#ddd" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.27098042;" transform="translate(-24, 60)">
+<g fill="#ddd" fill-opacity="0.27098042" stroke="#ddd" stroke-opacity="0.02" transform="translate(-24, 60)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#ddd" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.27098042;" transform="translate(264, 60)">
+<g fill="#ddd" fill-opacity="0.27098042" stroke="#ddd" stroke-opacity="0.02" transform="translate(264, 60)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.07490196;" transform="translate(24, 60)">
+<g fill="#222" fill-opacity="0.07490196" stroke="#ddd" stroke-opacity="0.02" transform="translate(24, 60)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.41058823;" transform="translate(72, 60)">
+<g fill="#222" fill-opacity="0.41058823" stroke="#ddd" stroke-opacity="0.02" transform="translate(72, 60)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.27254903;" transform="translate(120, 60)">
+<g fill="#222" fill-opacity="0.27254903" stroke="#ddd" stroke-opacity="0.02" transform="translate(120, 60)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#ddd" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.10784313;" transform="translate(0, 108)">
+<g fill="#ddd" fill-opacity="0.10784313" stroke="#ddd" stroke-opacity="0.02" transform="translate(0, 108)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#ddd" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.10784313;" transform="translate(288, 108)">
+<g fill="#ddd" fill-opacity="0.10784313" stroke="#ddd" stroke-opacity="0.02" transform="translate(288, 108)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#ddd" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.24588236;" transform="translate(48, 108)">
+<g fill="#ddd" fill-opacity="0.24588236" stroke="#ddd" stroke-opacity="0.02" transform="translate(48, 108)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#ddd" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.39333338;" transform="translate(96, 108)">
+<g fill="#ddd" fill-opacity="0.39333338" stroke="#ddd" stroke-opacity="0.02" transform="translate(96, 108)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>
-<g fill="#222" stroke="#ddd" stroke-opacity="0.02" style="fill-opacity:0.021568626;" transform="translate(144, 108)">
+<g fill="#222" fill-opacity="0.021568626" stroke="#ddd" stroke-opacity="0.02" transform="translate(144, 108)">
 <rect height="72" width="24" x="24" y="0"/>
 <rect height="24" width="72" x="0" y="24"/>
 </g>

@@ -47,12 +47,12 @@ where
 ///
 /// println!("{}", c);
 /// ```
-pub fn chevrons<'a>(
+pub fn chevrons(
     chevron_width: f32,
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), width * height);
 
@@ -158,13 +158,13 @@ pub fn chevrons<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn circle_packing<'a>(
-    centers: &'a [(f32, f32)],
+pub fn circle_packing(
+    centers: &[(f32, f32)],
     (minr, maxr): (f32, f32),
     (width, height): (f32, f32),
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32, f32),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(centers.len(), fill.len());
 
@@ -268,13 +268,13 @@ pub fn circle_packing<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn concentric_circles<'a>(
+pub fn concentric_circles(
     diameter: f32,
     concentric_width: f32,
     (width, height): (usize, usize),
-    fill_outer: &'a [(&'a str, f32)],
-    fill_inner: &'a [(&'a str, f32)],
-    background_color: &'a str,
+    fill_outer: &[(&str, f32)],
+    fill_inner: &[(&str, f32)],
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill_outer.len(), width * height);
     debug_assert_eq!(fill_inner.len(), width * height);
@@ -302,14 +302,9 @@ pub fn concentric_circles<'a>(
                     .set("cy", cy)
                     .set("r", diameter / 2.0)
                     .set("stroke", fill_outer[ix].0)
-                    .set(
-                        "style",
-                        format!(
-                            "opacity:{}; stroke-width:0x{:X};",
-                            fill_outer[ix].1,
-                            (concentric_width as i64)
-                        ),
-                    ),
+                    .set("fill-opacity", fill_outer[ix].1)
+                    .set("stroke-opacity", fill_outer[ix].1)
+                    .set("stroke-width", format!("0x{:X}", concentric_width as isize)),
             );
 
             doc = doc.add(
@@ -356,13 +351,13 @@ pub fn concentric_circles<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn cubic_disarray<'a>(
+pub fn cubic_disarray(
     side: f32,
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32),
-    (translate, rotate): (&'a [f32], &'a [f32]),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32),
+    (translate, rotate): (&[f32], &[f32]),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), width * height);
     debug_assert_eq!(translate.len(), width * height);
@@ -429,12 +424,12 @@ pub fn cubic_disarray<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn diamonds<'a>(
+pub fn diamonds(
     (diamond_width, diamond_height): (f32, f32),
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), width * height);
 
@@ -545,12 +540,12 @@ pub fn diamonds<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn hexagons<'a>(
+pub fn hexagons(
     side: f32,
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), width * height);
 
@@ -679,14 +674,14 @@ pub fn hexagons<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn hypnotic_squares<'a>(
+pub fn hypnotic_squares(
     side: f32,
     min_side: f32,
     steps: usize,
     (width, height): (usize, usize),
-    directions: &'a [(isize, isize)],
-    stroke: &'a [(&'a str, f32, f32)],
-    background_color: &'a str,
+    directions: &[(isize, isize)],
+    stroke: &[(&str, f32, f32)],
+    background_color: &str,
 ) -> Document {
     debug_assert!(min_side < side);
     debug_assert_eq!(stroke.len(), width * height);
@@ -768,13 +763,13 @@ pub fn hypnotic_squares<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn joy_division<'a>(
+pub fn joy_division(
     step_size: f32,
     (width, height): (usize, usize),
-    pulse_heights: &'a [f32],
-    (stroke_color, stroke_opacity, stroke_width): (&'a str, f32, f32),
+    pulse_heights: &[f32],
+    (stroke_color, stroke_opacity, stroke_width): (&str, f32, f32),
     padding_top: usize,
-    background_color: &'a str,
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(pulse_heights.len(), width * height);
 
@@ -865,13 +860,13 @@ pub fn joy_division<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn mosaic_squares<'a>(
+pub fn mosaic_squares(
     side: f32,
     (width, height): (usize, usize),
-    fill_outer: &'a [(&'a str, f32)],
-    fill_inner: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32),
-    background_color: &'a str,
+    fill_outer: &[(&str, f32)],
+    fill_inner: &[(&str, f32)],
+    stroke: (&str, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill_outer.len(), width * height);
     debug_assert_eq!(fill_inner.len(), width * height);
@@ -1035,12 +1030,12 @@ pub fn mosaic_squares<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn nested_squares<'a>(
+pub fn nested_squares(
     inner_side: f32,
     (width, height): (usize, usize),
-    stroke_outer: &'a [(&'a str, f32)],
-    fill_inner: &'a [(&'a str, f32)],
-    background_color: &'a str,
+    stroke_outer: &[(&str, f32)],
+    fill_inner: &[(&str, f32)],
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill_inner.len(), width * height);
     debug_assert_eq!(stroke_outer.len(), width * height);
@@ -1074,13 +1069,8 @@ pub fn nested_squares<'a>(
                     .set("height", outer_side)
                     .set("fill", "none")
                     .set("stroke", stroke_outer[ix].0)
-                    .set(
-                        "style",
-                        format!(
-                            "opacity:{};stroke-width:{};",
-                            stroke_outer[ix].1, inner_side
-                        ),
-                    ),
+                    .set("stroke-width", inner_side)
+                    .set("stroke-opacity", stroke_outer[ix].1),
             );
 
             // inner
@@ -1104,10 +1094,9 @@ pub fn nested_squares<'a>(
                     .set("height", inner_side * 3.0)
                     .set("fill", "none")
                     .set("stroke", fill_inner[ix].0)
-                    .set(
-                        "style",
-                        format!("opacity:{};stroke-width:{};", fill_inner[ix].1, inner_side),
-                    ),
+                    .set("stroke", fill_inner[ix].0)
+                    .set("stroke-width", inner_side)
+                    .set("stroke-opacity", fill_inner[ix].1),
             );
         }
     }
@@ -1139,12 +1128,12 @@ pub fn nested_squares<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn octagons<'a>(
+pub fn octagons(
     side: f32,
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), width * height);
 
@@ -1216,11 +1205,11 @@ pub fn octagons<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn overlapping_circles<'a>(
+pub fn overlapping_circles(
     radius: f32,
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), width * height);
 
@@ -1239,7 +1228,7 @@ pub fn overlapping_circles<'a>(
                     .set("cy", y as f32 * radius)
                     .set("r", radius)
                     .set("fill", fill[ix].0)
-                    .set("style", format!("opacity:{};", fill[ix].1)),
+                    .set("fill-opacity", fill[ix].1),
             );
 
             if x == 0 {
@@ -1249,7 +1238,7 @@ pub fn overlapping_circles<'a>(
                         .set("cy", y as f32 * radius)
                         .set("r", radius)
                         .set("fill", fill[ix].0)
-                        .set("style", format!("opacity:{};", fill[ix].1)),
+                        .set("fill-opacity", fill[ix].1),
                 )
             }
 
@@ -1260,7 +1249,7 @@ pub fn overlapping_circles<'a>(
                         .set("cy", height as f32 * radius)
                         .set("r", radius)
                         .set("fill", fill[ix].0)
-                        .set("style", format!("opacity:{};", fill[ix].1)),
+                        .set("fill-opacity", fill[ix].1),
                 )
             }
 
@@ -1271,7 +1260,7 @@ pub fn overlapping_circles<'a>(
                         .set("cy", height as f32 * radius)
                         .set("r", radius)
                         .set("fill", fill[ix].0)
-                        .set("style", format!("opacity:{};", fill[ix].1)),
+                        .set("fill-opacity", fill[ix].1),
                 )
             }
         }
@@ -1305,13 +1294,13 @@ pub fn overlapping_circles<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn overlapping_rings<'a>(
+pub fn overlapping_rings(
     radius: f32,
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    background_color: &'a str,
+    stroke: &[(&str, f32)],
+    background_color: &str,
 ) -> Document {
-    debug_assert_eq!(fill.len(), width * height);
+    debug_assert_eq!(stroke.len(), width * height);
 
     let mut doc = create_document(
         (radius * width as f32, radius * height as f32),
@@ -1328,11 +1317,9 @@ pub fn overlapping_rings<'a>(
                     .set("cy", y as f32 * radius)
                     .set("r", radius - radius / 8.0)
                     .set("fill", "none")
-                    .set("stroke", fill[ix].0)
-                    .set(
-                        "style",
-                        format!("opacity:{};stroke-width:{};", fill[ix].1, radius / 4.0),
-                    ),
+                    .set("stroke", stroke[ix].0)
+                    .set("stroke-opacity", stroke[ix].1)
+                    .set("stroke-width", radius / 4.0),
             );
 
             if x == 0 {
@@ -1342,11 +1329,9 @@ pub fn overlapping_rings<'a>(
                         .set("cy", (y as f32) * radius)
                         .set("r", radius - radius / 8.0)
                         .set("fill", "none")
-                        .set("stroke", fill[ix].0)
-                        .set(
-                            "style",
-                            format!("opacity:{};stroke-width:{};", fill[ix].1, radius / 4.0),
-                        ),
+                        .set("stroke", stroke[ix].0)
+                        .set("stroke-opacity", stroke[ix].1)
+                        .set("stroke-width", radius / 4.0),
                 )
             }
 
@@ -1357,11 +1342,9 @@ pub fn overlapping_rings<'a>(
                         .set("cy", height as f32 * radius)
                         .set("r", radius - radius / 8.0)
                         .set("fill", "none")
-                        .set("stroke", fill[ix].0)
-                        .set(
-                            "style",
-                            format!("opacity:{};stroke-width:{};", fill[ix].1, radius / 4.0),
-                        ),
+                        .set("stroke", stroke[ix].0)
+                        .set("stroke-opacity", stroke[ix].1)
+                        .set("stroke-width", radius / 4.0),
                 )
             }
 
@@ -1372,11 +1355,9 @@ pub fn overlapping_rings<'a>(
                         .set("cy", height as f32 * radius)
                         .set("r", radius - radius / 8.0)
                         .set("fill", "none")
-                        .set("stroke", fill[ix].0)
-                        .set(
-                            "style",
-                            format!("opacity:{};stroke-width:{};", fill[ix].1, radius / 4.0),
-                        ),
+                        .set("stroke", stroke[ix].0)
+                        .set("stroke-opacity", stroke[ix].1)
+                        .set("stroke-width", radius / 4.0),
                 )
             }
         }
@@ -1415,12 +1396,12 @@ pub enum PietMondrianSplitType {
 ///
 /// println!("{}", c);
 /// ```
-pub fn piet_mondrian<'a>(
+pub fn piet_mondrian(
     splits: &[(PietMondrianSplitType, f32)],
     (width, height): (f32, f32),
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32, f32),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32, f32),
+    background_color: &str,
 ) -> Document {
     let mut doc = create_document((width as f32, height as f32), background_color);
 
@@ -1501,11 +1482,11 @@ pub fn piet_mondrian<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn plaid<'a>(
-    distances: &'a [f32],
-    sizes: &'a [f32],
-    fill: &'a [(&'a str, f32)],
-    background_color: &'a str,
+pub fn plaid(
+    distances: &[f32],
+    sizes: &[f32],
+    fill: &[(&str, f32)],
+    background_color: &str,
 ) -> Document {
     let n = distances.len();
 
@@ -1590,12 +1571,12 @@ fn plus(side: f32) -> (Rectangle, Rectangle) {
 ///
 /// println!("{}", c);
 /// ```
-pub fn plus_signs<'a>(
+pub fn plus_signs(
     side: f32,
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), width * height);
 
@@ -1618,7 +1599,7 @@ pub fn plus_signs<'a>(
                 .set("fill", fill[ix].0)
                 .set("stroke", stroke.0)
                 .set("stroke-opacity", stroke.1)
-                .set("style", format!("fill-opacity:{};", fill[ix].1))
+                .set("fill-opacity", fill[ix].1)
                 .add(rects.0.clone())
                 .add(rects.1.clone());
 
@@ -1693,12 +1674,12 @@ pub fn plus_signs<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn sine_waves<'a>(
+pub fn sine_waves(
     period: f32,
     a: f32,
     ww: f32,
-    stroke: &'a [(&'a str, f32)],
-    background_color: &'a str,
+    stroke: &[(&str, f32)],
+    background_color: &str,
 ) -> Document {
     let n = stroke.len();
 
@@ -1728,7 +1709,8 @@ pub fn sine_waves<'a>(
             )
             .set("fill", "none")
             .set("stroke", s.0)
-            .set("style", format!("opacity:{};stroke-width:{};", s.1, ww));
+            .set("stroke-opacity", s.1)
+            .set("stroke-width", ww);
 
         doc = doc.add(path.clone().set(
             "transform",
@@ -1776,12 +1758,12 @@ pub fn sine_waves<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn squares<'a>(
+pub fn squares(
     side: f32,
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), width * height);
 
@@ -1834,11 +1816,11 @@ pub fn squares<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn tesselation<'a>(
+pub fn tesselation(
     length: f32,
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), 20);
 
@@ -2216,13 +2198,13 @@ pub fn tesselation<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn tiled_lines<'a>(
+pub fn tiled_lines(
     step_size: usize,
     (width, height): (usize, usize),
-    ltr: &'a [bool],
-    stroke: &'a [(&'a str, f32)],
+    ltr: &[bool],
+    stroke: &[(&str, f32)],
     stroke_width: f32,
-    background_color: &'a str,
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(ltr.len(), width * height);
     debug_assert_eq!(ltr.len(), stroke.len());
@@ -2280,12 +2262,12 @@ pub fn tiled_lines<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn triangles<'a>(
+pub fn triangles(
     side: f32,
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    stroke: (&'a str, f32),
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    stroke: (&str, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), width * height);
 
@@ -2376,13 +2358,13 @@ pub fn triangles<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn triangular_mesh<'a>(
+pub fn triangular_mesh(
     side: f32,
     (width, height): (usize, usize),
-    entropy: &'a [(f32, f32)],
-    fill: &'a [(&'a str, f32)],
-    stroke: (f32, &'a str, f32),
-    background_color: &'a str,
+    entropy: &[(f32, f32)],
+    fill: &[(&str, f32)],
+    stroke: (f32, &str, f32),
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), (4 * width - 2) * height);
     debug_assert_eq!(entropy.len(), width * (height + 1));
@@ -2485,12 +2467,12 @@ pub fn triangular_mesh<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn un_deus_trois<'a>(
+pub fn un_deus_trois(
     step_size: f32,
     (width, height): (usize, usize),
-    stroke: &'a [(&'a str, f32, f32)],
-    rotation: &'a [f32],
-    background_color: &'a str,
+    stroke: &[(&str, f32, f32)],
+    rotation: &[f32],
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(rotation.len(), 3 * width * height);
     debug_assert_eq!(stroke.len(), 3 * width * height);
@@ -2637,11 +2619,11 @@ pub fn un_deus_trois<'a>(
 ///
 /// println!("{}", c);
 /// ```
-pub fn xes<'a>(
+pub fn xes(
     side: f32,
     (width, height): (usize, usize),
-    fill: &'a [(&'a str, f32)],
-    background_color: &'a str,
+    fill: &[(&str, f32)],
+    background_color: &str,
 ) -> Document {
     debug_assert_eq!(fill.len(), width * height);
 
@@ -2665,7 +2647,7 @@ pub fn xes<'a>(
 
             let group = Group::new()
                 .set("fill", fill[ix].0)
-                .set("style", format!("opacity:{};", fill[ix].1))
+                .set("fill-opacity", fill[ix].1)
                 .add(rects.0.clone())
                 .add(rects.1.clone());
 
