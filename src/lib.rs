@@ -1412,22 +1412,22 @@ pub fn piet_mondrian(
         new_squares = vec![];
 
         for s in squares {
-            let (t, d) = split;
-            match t {
+            let (split_type, split_location) = split;
+            match split_type {
                 PietMondrianSplitType::X => {
                     let (x, y, w, h) = s;
-                    if x < *d && x + w > *d {
-                        new_squares.push((x, y, w - (x + w - d), h));
-                        new_squares.push((*d, y, x + w - d, h));
+                    if x < *split_location && x + w > *split_location {
+                        new_squares.push((x, y, w - (x + w - split_location), h));
+                        new_squares.push((*split_location, y, x + w - split_location, h));
                     } else {
                         new_squares.push(s);
                     }
                 }
                 PietMondrianSplitType::Y => {
                     let (x, y, w, h) = s;
-                    if y < *d && y + h > *d {
-                        new_squares.push((x, y, w, h - (y + h - d)));
-                        new_squares.push((x, *d, w, y + h - d));
+                    if y < *split_location && y + h > *split_location {
+                        new_squares.push((x, y, w, h - (y + h - split_location)));
+                        new_squares.push((x, *split_location, w, y + h - split_location));
                     } else {
                         new_squares.push(s);
                     }

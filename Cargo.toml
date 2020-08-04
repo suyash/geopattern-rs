@@ -1,6 +1,6 @@
 [package]
 name = "geopattern"
-version = "0.4.0"
+version = "0.5.0"
 authors = ["Suyash <hi@suy.io>"]
 edition = "2018"
 license = "MIT OR Apache-2.0"
@@ -9,11 +9,7 @@ repository = "https://github.com/suyash/geopattern-rs"
 documentation = "https://docs.rs/geopattern"
 readme = "README.md"
 keywords = ["geometric", "patterns", "geopattern"]
-exclude = [
-    "/examples/readme/",
-    ".github/",
-    ".vscode/",
-]
+include = ["src/", "LICENSE-*", "README.md"]
 
 [dependencies]
 svg = "0.8.0"
