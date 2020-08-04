@@ -131,6 +131,111 @@ pub fn chevrons<'a>(
     doc
 }
 
+/// circle packing
+///
+/// https://generativeartistry.com/tutorials/circle-packing/
+///
+/// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/circle_packing.svg)
+///
+/// ```
+/// use geopattern::circle_packing;
+///
+/// let c = circle_packing(
+///     &(0..100).map(|ix| (ix as f32, ix as f32)).collect::<Vec<(f32, f32)>>(),
+///     (2.0, 24.0),
+///     (200.0, 200.0),
+///     &(0..100)
+///         .map(|v| {
+///             (
+///                 if v & 1 == 0 { "#222" } else { "#ddd" },
+///                 0.02 + (v as f32) / 4.0,
+///             )
+///         })
+///         .collect::<Vec<(&str, f32)>>(),
+///     ("#ddd", 1.0, 0.2),
+///     "#EEE",
+/// );
+///
+/// println!("{}", c);
+/// ```
+pub fn circle_packing<'a>(
+    centers: &'a [(f32, f32)],
+    (minr, maxr): (f32, f32),
+    (width, height): (f32, f32),
+    fill: &'a [(&'a str, f32)],
+    stroke: (&'a str, f32, f32),
+    background_color: &'a str,
+) -> Document {
+    debug_assert_eq!(centers.len(), fill.len());
+
+    let mut doc = create_document((width, height), background_color);
+
+    let mut circles: Vec<(f32, f32, f32)> = Vec::new();
+
+    // explicit immutable borrow to avoid collision with mutable borrow in loop
+    // https://stackoverflow.com/a/57690260
+    let has_collision = |(x, y, r): (f32, f32, f32), circles: &Vec<(f32, f32, f32)>| {
+        if x + r > width || x - r < 0.0 {
+            return true;
+        }
+
+        if y + r > height || y - r < 0.0 {
+            return true;
+        }
+
+        for c in circles.iter() {
+            let a = r + c.2;
+            let dx = x - c.0;
+            let dy = y - c.1;
+
+            if a * a >= dx * dx + dy * dy {
+                return true;
+            }
+        }
+
+        false
+    };
+
+    let fit_radius = |(x, y): (f32, f32), circles: &Vec<(f32, f32, f32)>| {
+        let mut r = minr;
+
+        while r < maxr {
+            if has_collision((x, y, r), &circles) {
+                r -= 1.0;
+                break;
+            }
+            r += 1.0;
+        }
+
+        r
+    };
+
+    for (i, (x, y)) in centers.iter().enumerate() {
+        let (x, y) = (*x, *y);
+
+        if has_collision((x, y, minr), &circles) {
+            continue;
+        }
+
+        let r = fit_radius((x, y), &circles);
+
+        circles.push((x, y, r));
+        doc = doc.add(
+            Circle::new()
+                .set("cx", x)
+                .set("cy", y)
+                .set("r", r)
+                .set("fill", fill[i].0)
+                .set("fill-opacity", fill[i].1)
+                .set("stroke", stroke.0)
+                .set("stroke-width", stroke.1)
+                .set("stroke-opacity", stroke.2),
+        );
+    }
+
+    doc
+}
+
 /// concentric circles
 ///
 /// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/concentric_circles.svg)
@@ -538,6 +643,105 @@ pub fn hexagons<'a>(
                     ),
                 ));
             }
+        }
+    }
+
+    doc
+}
+
+/// Hypnotic Squares
+///
+/// https://generativeartistry.com/tutorials/hypnotic-squares/
+///
+/// ![](https://raw.githubusercontent.com/suyash/geopattern-rs/master/examples/readme/hypnotic_squares.svg)
+///
+/// ```
+/// use geopattern::hypnotic_squares;
+///
+/// let c = hypnotic_squares(
+///     60.0,
+///     30.0,
+///     5,
+///     (2, 2),
+///     &(0..4)
+///         .map(|i| {
+///             (
+///                 (i % 3) as isize - 1,
+///                 (2 * i % 3) as isize - 1,
+///             )
+///         })
+///         .collect::<Vec<(isize, isize)>>(),
+///     &(0..4)
+///         .map(|v| ("#222", 1.0, 1.0))
+///         .collect::<Vec<(&str, f32, f32)>>(),
+///     "#987987",
+/// );
+///
+/// println!("{}", c);
+/// ```
+pub fn hypnotic_squares<'a>(
+    side: f32,
+    min_side: f32,
+    steps: usize,
+    (width, height): (usize, usize),
+    directions: &'a [(isize, isize)],
+    stroke: &'a [(&'a str, f32, f32)],
+    background_color: &'a str,
+) -> Document {
+    debug_assert!(min_side < side);
+    debug_assert_eq!(stroke.len(), width * height);
+    debug_assert_eq!(directions.len(), width * height);
+
+    let mut doc = create_document(
+        (side * width as f32, side * height as f32),
+        background_color,
+    );
+
+    let step_size = (side - min_side) / steps as f32;
+
+    let create_group = |stroke, stroke_width, stroke_opacity, xdir, ydir| {
+        let mut g = Group::new();
+
+        for i in 0..steps {
+            g = g.add(
+                Rectangle::new()
+                    .set(
+                        "x",
+                        step_size * i as f32 + step_size / 2.0 * i as f32 * xdir as f32,
+                    )
+                    .set(
+                        "y",
+                        step_size * i as f32 + step_size / 2.0 * i as f32 * ydir as f32,
+                    )
+                    .set("width", side - 2.0 * step_size * i as f32)
+                    .set("height", side - 2.0 * step_size * i as f32)
+                    .set("fill", "none")
+                    .set("stroke", stroke)
+                    .set("stroke-width", stroke_width)
+                    .set("stroke-opacity", stroke_opacity),
+            );
+        }
+
+        g
+    };
+
+    for y in 0..height {
+        for x in 0..width {
+            let ix = y * width + x;
+
+            doc = doc.add(
+                create_group(
+                    stroke[ix].0,
+                    stroke[ix].1,
+                    stroke[ix].2,
+                    directions[ix].0,
+                    directions[ix].1,
+                )
+                .set(
+                    "transform",
+                    format!("translate({} {})", x as f32 * side, y as f32 * side),
+                ),
+            )
         }
     }
 

@@ -1,20 +1,24 @@
+use rand::{rngs::SmallRng, Rng, SeedableRng};
 use sha1::{Digest, Sha1};
 use svg::save;
 
 use geopattern::{
-    chevrons, concentric_circles, cubic_disarray, diamonds, hexagons, joy_division, mosaic_squares,
-    nested_squares, octagons, overlapping_circles, overlapping_rings, plaid, plus_signs,
-    sine_waves, squares, tesselation, tiled_lines, triangles, triangular_mesh, un_deus_trois, xes,
+    chevrons, circle_packing, concentric_circles, cubic_disarray, diamonds, hexagons,
+    hypnotic_squares, joy_division, mosaic_squares, nested_squares, octagons, overlapping_circles,
+    overlapping_rings, plaid, plus_signs, sine_waves, squares, tesselation, tiled_lines, triangles,
+    triangular_mesh, un_deus_trois, xes,
 };
 
 fn main() -> anyhow::Result<()> {
     let digest = Sha1::digest(b"geopattern");
 
     write_chevrons(&digest)?;
+    write_circle_packing(&digest)?;
     write_concentric_circles(&digest)?;
     write_cubic_disarray(&digest)?;
     write_diamonds(&digest)?;
     write_hexagons(&digest)?;
+    write_hypnotic_squares(&digest)?;
     write_joy_division(&digest)?;
     write_mosaic_squares(&digest)?;
     write_nested_squares(&digest)?;
@@ -51,6 +55,43 @@ fn write_chevrons(digest: &[u8]) -> anyhow::Result<()> {
                 .collect::<Vec<(&str, f32)>>(),
             ("#000", 0.02),
             "#998877",
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_circle_packing(digest: &[u8]) -> anyhow::Result<()> {
+    let mut rng =
+        SmallRng::seed_from_u64(digest[7] as u64 * 256 + digest[8] as u64 * 16 + digest[9] as u64);
+    let (w, h) = (300.0, 300.0);
+
+    let mut points = Vec::new();
+    for _ in 0..500 {
+        points.push((rng.gen_range(0.0, w), rng.gen_range(0.0, h)));
+    }
+
+    let mut colors = Vec::new();
+    for i in 0..500 {
+        colors.push(format!(
+            "rgb({},{},{})",
+            digest[i % 20],
+            digest[(2 * i) % 20],
+            digest[(3 * i) % 20]
+        ));
+    }
+
+    save(
+        "examples/readme/circle_packing.svg",
+        &circle_packing(
+            &points,
+            (2.0, 200.0),
+            (w, h),
+            &(0..500)
+                .map(|ix| (colors[ix].as_str(), digest[ix % 20] as f32 / 255.0))
+                .collect::<Vec<(&str, f32)>>(),
+            ("#ddd", 1.0, 0.5),
+            "#FFF",
         ),
     )?;
 
@@ -162,6 +203,43 @@ fn write_hexagons(digest: &[u8]) -> anyhow::Result<()> {
                 .collect::<Vec<(&str, f32)>>(),
             ("#000", 0.02),
             &format!("rgb({},{},{})", digest[6], digest[7], digest[8]),
+        ),
+    )?;
+
+    Ok(())
+}
+
+fn write_hypnotic_squares(digest: &[u8]) -> anyhow::Result<()> {
+    let colors: Vec<String> = (2..18)
+        .map(|i| {
+            format!(
+                "rgb({},{},{})",
+                128 + digest[i % 20] / 2,
+                128 + digest[2 * i % 20] / 2,
+                128 + digest[3 * i % 20] / 2
+            )
+        })
+        .collect();
+
+    save(
+        "examples/readme/hypnotic_squares.svg",
+        &hypnotic_squares(
+            72.0,
+            36.0,
+            6,
+            (4, 4),
+            &(0..16)
+                .map(|i| {
+                    (
+                        (digest[i] % 3) as isize - 1,
+                        (digest[2 * i % 20] % 3) as isize - 1,
+                    )
+                })
+                .collect::<Vec<(isize, isize)>>(),
+            &(0..16)
+                .map(|i| (colors[i].as_str(), 1.0, 1.0))
+                .collect::<Vec<(&str, f32, f32)>>(),
+            "#333",
         ),
     )?;
 

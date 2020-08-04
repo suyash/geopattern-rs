@@ -20,6 +20,10 @@ cargo run --example create_readme_examples
 
 <img src="examples/readme/chevrons.svg">
 
+### Circle Packing
+
+<img src="examples/readme/circle_packing.svg">
+
 ### Concentric Circles
 
 <img src="examples/readme/concentric_circles.svg">
@@ -35,6 +39,10 @@ cargo run --example create_readme_examples
 ### Hexagons
 
 <img src="examples/readme/hexagons.svg">
+
+### Hypnotic Squares
+
+<img src="examples/readme/hypnotic_squares.svg">
 
 ### Joy Division
 
